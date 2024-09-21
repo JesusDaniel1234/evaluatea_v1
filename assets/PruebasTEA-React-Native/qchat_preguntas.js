@@ -1,0 +1,323 @@
+export default data = [
+  {
+    id: 1,
+    contenido: "¿Su hijo lo mira a usted cuando lo llama por su nombre?",
+    tipo_riesgo: "Frecuencia",
+    rango_riesgo: "Menos Frecuente",
+    valor_riesgo: ["Nunca", "Rara Vez", "A Veces", "Usualmente", "Siempre"],
+  },
+  {
+    id: 2,
+    contenido:
+      "¿Qué tan fácil es para usted lograr contacto visual con su hijo?",
+    tipo_riesgo: "Facilidad",
+    rango_riesgo: "Menos Fácil",
+    valor_riesgo: [
+      "Imposible",
+      "Muy Difícil",
+      "Difícil",
+      "Bastante Fácil",
+      "Muy Fácil",
+    ],
+  },
+  {
+    id: 3,
+    contenido: "Cuando su niño está jugando solo, ¿Pone objetos en fila?",
+    tipo_riesgo: "Tipicidad",
+    rango_riesgo: "Menos Típico",
+    valor_riesgo: [
+      "No lo Hace",
+      "Muy Inusual",
+      "Inusual",
+      "Bastante Típico",
+      "Muy Típico",
+    ],
+  },
+  {
+    id: 4,
+    contenido: "¿Pueden otras personas comprender lo que habla su hijo?",
+    tipo_riesgo: "Frecuencia",
+    rango_riesgo: "Menos Frecuente",
+    valor_riesgo: ["Nunca", "Rara Vez", "A Veces", "Usualmente", "Siempre"],
+  },
+  {
+    id: 5,
+    contenido:
+      "¿Apunta su hijo para indicar que quiere? (p.ej. Un juguete que no puede alcanzar)",
+    tipo_riesgo: "Frecuencia en Periodo",
+    rango_riesgo: "Menos Frecuente en un Periodo",
+    valor_riesgo: [
+      "Nunca",
+      "Más de una vez a la Semana",
+      "Algunas Veces a la Semana",
+      "Algunas Veces en un Día",
+      "Muchas Veces en un Día",
+    ],
+  },
+  {
+    id: 6,
+    contenido:
+      "¿Apunta su hijo para compartir interés con usted (p. ej. Mostrar algo interesante)?",
+    tipo_riesgo: "Frecuencia en Periodo",
+    rango_riesgo: "Menos Frecuente en un Periodo",
+    valor_riesgo: [
+      "Nunca",
+      "Más de una vez a la Semana",
+      "Algunas Veces a la Semana",
+      "Algunas Veces en un Día",
+      "Muchas Veces en un Día",
+    ],
+  },
+  {
+    id: 7,
+    contenido:
+      "¿Cuánto tiempo puede mantener interés su hijo en objetos que giran?(p. ej. Lavadora, ventilador, ruedas de autos)",
+    tipo_riesgo: "Temporal",
+    rango_riesgo: "Menos Tiempo",
+    valor_riesgo: [
+      "Menos de un Minuto",
+      "Par de Minutos",
+      "10 Minutos",
+      "Media Hora",
+      "Varias Horas",
+    ],
+  },
+  {
+    id: 8,
+    contenido: "¿Cuántas palabras puede decir su hijo?",
+    tipo_riesgo: "Cantidad de Palabras",
+    rango_riesgo: "Menor Número de Palabras",
+    valor_riesgo: [
+      "No ha comenzado a hablar",
+      "Menos de 10 palabras",
+      "Entre 10 y 50 palabras",
+      "Entre 50 y 100 palabras",
+      "Más de 100 palabras",
+    ],
+  },
+  {
+    id: 9,
+    contenido:
+      "¿Juega su hijo a simular? (p. ej. cuidar una muñeca, hablar por un teléfono de juguete)",
+    tipo_riesgo: "Frecuencia en Periodo",
+    rango_riesgo: "Menos Frecuente en un Periodo",
+    valor_riesgo: [
+      "Nunca",
+      "Más de una vez a la Semana",
+      "Algunas Veces a la Semana",
+      "Algunas Veces en un Día",
+      "Muchas Veces en un Día",
+    ],
+  },
+  {
+    id: 10,
+    contenido: "¿Mira el niño hacia donde usted lo hace?",
+    tipo_riesgo: "Frecuencia en Periodo",
+    rango_riesgo: "Menos Frecuente en un Periodo",
+    valor_riesgo: [
+      "Nunca",
+      "Más de una vez a la Semana",
+      "Algunas Veces a la Semana",
+      "Algunas Veces en un Día",
+      "Muchas Veces en un Día",
+    ],
+  },
+  {
+    id: 11,
+    contenido: "¿Con qué frecuencia su hijo huele o lame objetos inusuales?",
+    tipo_riesgo: "Frecuencia en Periodo",
+    rango_riesgo: "Menos Frecuente en un Periodo",
+    valor_riesgo: [
+      "Nunca",
+      "Más de una vez a la Semana",
+      "Algunas Veces a la Semana",
+      "Algunas Veces en un Día",
+      "Muchas Veces en un Día",
+    ],
+  },
+  {
+    id: 12,
+    contenido:
+      "¿El niño pone la mano de usted en un objeto cuando quiere que usted lo use? (p. ej. En una manilla de una puerta para que usted la abra, en un jueguete para que usted lo encienda)",
+    tipo_riesgo: "Frecuencia en Periodo",
+    rango_riesgo: "Menos Frecuente en un Periodo",
+    valor_riesgo: [
+      "Nunca",
+      "Más de una vez a la Semana",
+      "Algunas Veces a la Semana",
+      "Algunas Veces en un Día",
+      "Muchas Veces en un Día",
+    ],
+  },
+  {
+    id: 13,
+    contenido: "¿Camina su hijo en las puntas de los pies?",
+    tipo_riesgo: "Tipicidad",
+    rango_riesgo: "Menos Típico",
+    valor_riesgo: [
+      "No lo Hace",
+      "Muy Inusual",
+      "Inusual",
+      "Bastante Típico",
+      "Muy Típico",
+    ],
+  },
+  {
+    id: 14,
+    contenido:
+      "¿Qué tan fácil es para su hijo adaptarse cuando se cambian sus rutinas o cuando las cosas están fuera de su lugar común?",
+    tipo_riesgo: "Facilidad",
+    rango_riesgo: "Menos Fácil",
+    valor_riesgo: [
+      "Imposible",
+      "Muy Difícil",
+      "Difícil",
+      "Bastante Fácil",
+      "Muy Fácil",
+    ],
+  },
+  {
+    id: 15,
+    contenido:
+      "Si usted, o alguien de la familia está visiblemente molesto, ¿Su hijo muestra signos de querer reconfortarlo? (p. ej. acariciarle el cabello, abrazarlo)",
+    tipo_riesgo: "Tipicidad",
+    rango_riesgo: "Menos Típico",
+    valor_riesgo: [
+      "No lo Hace",
+      "Muy Inusual",
+      "Inusual",
+      "Bastante Típico",
+      "Muy Típico",
+    ],
+  },
+  {
+    id: 16,
+    contenido:
+      "¿Su hijo repite una y otra vez algunas acciones (abrir los grifos, prender las luces abrir y cerrar puertas)?",
+    tipo_riesgo: "Frecuencia en Periodo",
+    rango_riesgo: "Menos Frecuente en un Periodo",
+    valor_riesgo: [
+      "Nunca",
+      "Más de una vez a la Semana",
+      "Algunas Veces a la Semana",
+      "Algunas Veces en un Día",
+      "Muchas Veces en un Día",
+    ],
+  },
+  {
+    id: 17,
+    contenido: "Usted describiría las primeras palabras de su hijo como:",
+    tipo_riesgo: "Tipicidad",
+    rango_riesgo: "Menos Típico",
+    valor_riesgo: [
+      "No lo Hace",
+      "Muy Inusual",
+      "Inusual",
+      "Bastante Típico",
+      "Muy Típico",
+    ],
+  },
+  {
+    id: 18,
+    contenido:
+      "¿Repite su hijo cosas que ha escuchado (cosas que usted dice frases de canciones o películas, sonidos)?",
+    tipo_riesgo: "Frecuencia en Periodo",
+    rango_riesgo: "Menos Frecuente en un Periodo",
+    valor_riesgo: [
+      "Nunca",
+      "Más de una vez a la Semana",
+      "Algunas Veces a la Semana",
+      "Algunas Veces en un Día",
+      "Muchas Veces en un Día",
+    ],
+  },
+  {
+    id: 19,
+    contenido: "¿Usa su hijo gestos simples (agitar la mano para despedirse)?",
+    tipo_riesgo: "Frecuencia en Periodo",
+    rango_riesgo: "Menos Frecuente en un Periodo",
+    valor_riesgo: [
+      "Nunca",
+      "Más de una vez a la Semana",
+      "Algunas Veces a la Semana",
+      "Algunas Veces en un Día",
+      "Muchas Veces en un Día",
+    ],
+  },
+  {
+    id: 20,
+    contenido:
+      "¿Hace su hijo movimientos inusuales de los dedos cerca de sus ojos?",
+    tipo_riesgo: "Frecuencia en Periodo",
+    rango_riesgo: "Menos Frecuente en un Periodo",
+    valor_riesgo: [
+      "Nunca",
+      "Más de una vez a la Semana",
+      "Algunas Veces a la Semana",
+      "Algunas Veces en un Día",
+      "Muchas Veces en un Día",
+    ],
+  },
+  {
+    id: 21,
+    contenido:
+      "¿Su hijo mira espontáneamente su rostro para ver su reacción cuando se enfrenta con algo poco familiar?",
+    tipo_riesgo: "Frecuencia",
+    rango_riesgo: "Menos Frecuente",
+    valor_riesgo: ["Nunca", "Rara Vez", "A Veces", "Usualmente", "Siempre"],
+  },
+  {
+    id: 22,
+    contenido:
+      "¿Cuánto tiempo puede su hijo mantener el interés en sólo un objeto, o dos?",
+    tipo_riesgo: "Temporal en un Día",
+    rango_riesgo: "Menos Tiempo",
+    valor_riesgo: [
+      "No lo Hace",
+      "Muy Inusual",
+      "Inusual",
+      "Bastante Típico",
+      "Muy Típico",
+    ],
+  },
+  {
+    id: 23,
+    contenido:
+      "¿Su hijo agita objetos repetidamente (p. ej. Trozos de cuerda)?",
+    tipo_riesgo: "Tipicidad",
+    rango_riesgo: "Menos Típico",
+    valor_riesgo: [
+      "No lo Hace",
+      "Muy Inusual",
+      "Inusual",
+      "Bastante Típico",
+      "Muy Típico",
+    ],
+  },
+  {
+    id: 24,
+    contenido: "¿Su hijo parece ser demasiado sensible al sonido?",
+    tipo_riesgo: "Tipicidad",
+    rango_riesgo: "Menos Típico",
+    valor_riesgo: [
+      "No lo Hace",
+      "Muy Inusual",
+      "Inusual",
+      "Bastante Típico",
+      "Muy Típico",
+    ],
+  },
+  {
+    id: 25,
+    contenido: "¿Su hijo se queda mirando al vacío sin objetivo aparente?",
+    tipo_riesgo: "Frecuencia en Periodo",
+    rango_riesgo: "Menos Frecuente en un Periodo",
+    valor_riesgo: [
+      "Nunca",
+      "Más de una vez a la Semana",
+      "Algunas Veces a la Semana",
+      "Algunas Veces en un Día",
+      "Muchas Veces en un Día",
+    ],
+  },
+];

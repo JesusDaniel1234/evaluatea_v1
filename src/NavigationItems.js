@@ -1,11 +1,14 @@
 import Inicio from "./Inicio";
-import MChatR from "./tests/MChatR";
-import Profile from "./tests/Profile";
-import QChat from "./tests/QChat";
-import QChat10 from "./tests/QChat10";
+import MChatR from "./pages/tests/MChatR";
+import Profile from "./pages/profile/Profile";
+import QChat from "./pages/QChat";
+import QChat10 from "./pages/tests/QChat10";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+
+const login = false;
 
 export const ListNavigationItems = [
   {
@@ -42,9 +45,24 @@ export const ListLabelsMenu = [
       },
     ],
   },
+  {
+    name: "Listar Prguntas",
+    icon: <FontAwesome name="list-ul" size={24} color="black" />,
+    subMenu: [
+      {
+        name: "MChatR",
+      },
+      {
+        name: "QChat",
+      },
+      {
+        name: "QChat10",
+      },
+    ],
+  },
 ];
 
-export const ListTestItems = [
+export const PublicListTestItems = [
   {
     name: "MChatR",
     component: MChatR,

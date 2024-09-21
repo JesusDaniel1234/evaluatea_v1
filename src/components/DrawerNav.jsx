@@ -1,9 +1,8 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import React from "react";
 import { CustomDrawerContent } from "./CustomDrawerContent";
-import { ListNavigationItems, ListTestItems } from "../NavigationItems";
+import { ListNavigationItems, PublicListTestItems } from "../NavigationItems";
 import { constant } from "../constants/constants";
-import MChatR from "../tests/MChatR";
 
 const Drawer = createDrawerNavigator();
 
@@ -32,15 +31,17 @@ export default function DrawerNav() {
             key={index}
             name={item.name}
             component={item.component}
-            options={{
+            options={
+              {
               headerStyle: { backgroundColor: "#fdce75" },
               drawerType: "slide",
               drawerIcon: () => item.icon,
+              
             }}
           />
         );
       })}
-      {ListTestItems.map((item, index) => {
+      {PublicListTestItems.map((item, index) => {
         return (
           <Drawer.Screen
             key={index}

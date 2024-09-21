@@ -2,7 +2,7 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useNavigationState } from "@react-navigation/native";
 import {
   Image,
   Text,
@@ -11,16 +11,34 @@ import {
   View,
 } from "react-native";
 import { ListLabelsMenu } from "../NavigationItems";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { constant } from "../constants/constants";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 export function CustomDrawerContent(props) {
   const navigation = useNavigation();
-
-  const login = false
-
+  const [currentRoute, setCurrentRoute] = useState("Inicio");
+  const navigationState = useNavigationState((state) => state);
   const [menuIndex, setMenuIndex] = useState(-1);
+  const listaPagesPrincipal = ["Inicio", "Profile"];
+
+  useEffect(() => {
+    if (navigationState) {
+      const routeName = navigationState.routes[navigationState.index]?.name;
+      setCurrentRoute(routeName);
+      if (listaPagesPrincipal.find((elememt) => routeName === elememt)) {
+        setMenuIndex(-1);
+        print("Entró")
+      }
+    }
+  }, [navigationState]);
+  console.log(currentRoute)
+
+  const login = true;
+
+  
 
   return (
     <DrawerContentScrollView
@@ -70,7 +88,11 @@ export function CustomDrawerContent(props) {
           }}
         />
         {/** Test Items */}
-        { !login && ListLabelsMenu.map((item, index) => {
+        {ListLabelsMenu.map((item, index) => {
+          if (login && item.name === "Listar Preguntas") {
+            return;
+          }
+
           return (
             <TouchableOpacity
               activeOpacity={0.8}
@@ -79,7 +101,6 @@ export function CustomDrawerContent(props) {
                 marginHorizontal: constant.SPACING / 1.7,
                 marginVertical: constant.SPACING / 2.5,
                 borderRadius: constant.borderRadius,
-                backgroundColor: "#f2685e",
               }}
               onPress={() => setMenuIndex(menuIndex === index ? -1 : index)}
             >
@@ -90,24 +111,47 @@ export function CustomDrawerContent(props) {
                   paddingVertical: constant.SPACING / 1.2,
                   borderRadius: constant.borderRadius,
                   alignItems: "center",
-                  gap: 32,
+                  justifyContent: "space-between",
+                  backgroundColor: "#e68a00",
                 }}
               >
-                {item.icon}
-
-                <Text
+                <View
                   style={{
-                    paddingRight: 10,
-                    fontSize: constant.textFontSize,
-                    paddingHorizontal: constant.SPACING,
-                    fontWeight: "500",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 32,
                   }}
                 >
-                  {item.name}
-                </Text>
+                  {item.icon}
+
+                  <Text
+                    style={{
+                      paddingRight: 10,
+                      fontSize: constant.textFontSize,
+                      paddingHorizontal: constant.SPACING,
+                      fontWeight: "500",
+                    }}
+                  >
+                    {item.name}
+                  </Text>
+                </View>
+
+                {menuIndex === index ? (
+                  <AntDesign name="down" size={24} color="black" />
+                ) : (
+                  <AntDesign name="up" size={24} color="black" />
+                )}
               </View>
               {menuIndex === index && (
-                <View>
+                <View
+                  style={{
+                    borderRadius: constant.borderRadius,
+                    backgroundColor: "#e68a00",
+                    marginTop: 4,
+                    marginHorizontal: 4,
+                    borderRadius: constant.borderRadius,
+                  }}
+                >
                   {item.subMenu.map((menu, index) => {
                     return (
                       <TouchableNativeFeedback
@@ -118,12 +162,26 @@ export function CustomDrawerContent(props) {
                           style={{
                             paddingHorizontal: constant.SPACING,
                             paddingVertical: constant.SPACING / 1.5,
-                            marginTop:4,
-                            backgroundColor:navigation.n "#e38fba",
-                            borderRadius:constant.borderRadius
+                            marginVertical: 4,
+                            marginHorizontal: 5,
+                            // backgroundColor:
+                            //   currentRoute === menu.name
+                            //     ? "white"
+                            //     : "transparent",
+                            borderRadius: constant.borderRadius,
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
                           }}
                         >
-                          <Text>{menu.name}</Text>
+                          <Text style={{ fontWeight: "500" }}>{menu.name}</Text>
+                          {currentRoute === menu.name && (
+                            <FontAwesome
+                              name="circle"
+                              size={10}
+                              color="black"
+                            />
+                          )}
                         </View>
                       </TouchableNativeFeedback>
                     );
