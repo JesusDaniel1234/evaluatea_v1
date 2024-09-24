@@ -3,18 +3,14 @@ import { StyleSheet, View } from "react-native";
 import * as Animatable from "react-native-animatable";
 
 export default function ProgressBarComponent({ index, refIndex, length }) {
-  console.group({ index: index, refIndex: refIndex, length: length });
-  
+  // console.group({ index:  index, refIndex:  refIndex, length:  length });
+
   const porFinalState = ((index + 1) / length) * 100;
   const colorBarraState = porFinalState === 100 ? "#17d430" : "#007BFF";
   const changeFinalState =
-    refIndex > index
-      ? (refIndex / length) * 100
-      : ((index + 1) / length) * 100;
+    refIndex > index ? (refIndex / length) * 100 : ((index + 1) / length) * 100;
   const changeInitialState =
-    refIndex > index
-      ? ((refIndex + 1) / length) * 100
-      : (index / length) * 100;
+    refIndex > index ? ((refIndex + 1) / length) * 100 : (index / length) * 100;
   const animationProgressBar = {
     from: { width: `${changeInitialState}%` },
     to: { width: `${changeFinalState}%` },

@@ -8,7 +8,9 @@ export const useQuestionLogic = (data) => {
   const indexState = useRef(0);
 
   const pregunta = data;
+  console.log(data)
   const cantPreguntas = pregunta.length;
+  console.log("Cantidad de Preguntas:", cantPreguntas)
   const idPreguntas = pregunta.map((pregunta) => pregunta.id);
   const preguntActual = pregunta.filter(
     (pregunta) => pregunta.id === idPreguntas[index]

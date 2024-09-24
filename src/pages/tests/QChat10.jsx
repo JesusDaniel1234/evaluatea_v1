@@ -1,15 +1,18 @@
-import { ScrollView, View,  StyleSheet, Text } from "react-native";
+import { ScrollView, View, StyleSheet, Text } from "react-native";
 import Acordeon from "../../components/Acordeon.jsx";
-import data from "../../../assets/PruebasTEA-React-Native/qchat10_preguntas.js";
 import { listaContenidosQChat } from "../../utils/ContenidosAcordeon.js";
 import { useQuestionLogic } from "../../hooks/QuestionLogic.jsx";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import RadioButtonComponent from "../../components/RadioButtonComponent.jsx";
 import ProgressBarComponent from "../../components/ProgressBarComponent.jsx";
 import { NavigationButtons } from "../../components/NavigationButtonsComponents.jsx";
 import { RadioButton } from "react-native-paper";
+import QuestionIndex from "../../components/QuestionIndex.jsx";
+import { useLoadQuestionQChat10 } from "../../hooks/LoadQuestionsActives.jsx";
+import LoadingSpinnerComponent from "../../components/LoadingSpinnerComponent.jsx";
 
 function QChat10() {
+  const { preguntas, loading } = useLoadQuestionQChat10();
+
   const {
     cantPreguntas,
     preguntActual,
@@ -19,8 +22,9 @@ function QChat10() {
     AnteriorBoton,
     index,
     indexState,
-  } = useQuestionLogic(data);
-  console.log("Pregunta Actual :",preguntActual)
+  } = useQuestionLogic(preguntas);
+
+  if (loading) return <LoadingSpinnerComponent />;
 
   return (
     <ScrollView
@@ -38,16 +42,7 @@ function QChat10() {
       })}
 
       <View style={styles.targetContainer}>
-        <View style={styles.questionNumberContainer}>
-          <Text style={styles.textQuestionNumber}>
-            Pregunta {index + 1} de {cantPreguntas}
-          </Text>
-          <MaterialCommunityIcons
-            name="file-document-edit-outline"
-            size={24}
-            color="black"
-          />
-        </View>
+        <QuestionIndex index={index} cantPreguntas={cantPreguntas} />
 
         <ProgressBarComponent
           index={index}
@@ -57,17 +52,17 @@ function QChat10() {
 
         {preguntActual.map((pregunta) => (
           <View key={pregunta.id}>
-            <Text style={{ fontSize: 18 }}>{pregunta.contenido}</Text>
+            <Text style={styles.textContentQuestion}>{pregunta.contenido}</Text>
             <RadioButton.Group
               onValueChange={handleCheckBoxChange}
               value={checkValue}
             >
-              {pregunta.valores_riesgo.map((valor, index) => {
+              {pregunta.obtener_valores_riesgo.map((valor, index) => {
                 return (
                   <RadioButtonComponent
                     key={index}
-                    label={valor}
-                    value={valor}
+                    label={valor.valor}
+                    value={valor.orden}
                   />
                 );
               })}
@@ -115,4 +110,5 @@ const styles = StyleSheet.create({
   textQuestionNumber: {
     fontSize: 15,
   },
+  textContentQuestion: { fontSize: 18 },
 });

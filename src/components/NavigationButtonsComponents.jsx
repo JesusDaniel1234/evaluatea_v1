@@ -12,16 +12,16 @@ export const NavigationButtons = ({
         onPress={() => onPrevious()}
         style={styles.touchableStyles}
       >
-        <Text style={{ color: "#fff" }}>Anterior</Text>
+        <Text style={styles.textColor}>Anterior</Text>
       </TouchableOpacity>
     )}
     {index < totalQuestions - 1 ? (
       <TouchableOpacity onPress={() => onNext()} style={styles.touchableStyles}>
-        <Text style={{ color: "#fff" }}>Siguiente</Text>
+        <Text style={styles.textColor}>Siguiente</Text>
       </TouchableOpacity>
     ) : (
       <TouchableOpacity style={styles.touchableStyles}>
-        <Text style={{ color: "#fff" }}>Guardar Resultados</Text>
+        <Text style={styles.textColor}>Guardar Resultados</Text>
       </TouchableOpacity>
     )}
   </View>
@@ -38,5 +38,8 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "#007BFF",
     borderRadius: 5,
+  },
+  textColor: {
+    color: "#fff",
   },
 });

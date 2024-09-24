@@ -1,14 +1,12 @@
-import Inicio from "./Inicio";
+import Inicio from "./pages/Inicio";
 import MChatR from "./pages/tests/MChatR";
-import Profile from "./pages/profile/Profile";
-import QChat from "./pages/QChat";
+import QChat from "./pages/tests/QChat";
 import QChat10 from "./pages/tests/QChat10";
+import Profile from "./pages/profile/Profile";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-
-const login = false;
 
 export const ListNavigationItems = [
   {
@@ -33,30 +31,57 @@ export const ListLabelsMenu = [
         color="black"
       />
     ),
+    needAuth: false,
     subMenu: [
       {
         name: "MChatR",
+        navigation: "MChatR",
       },
       {
         name: "QChat",
+        navigation: "QChat",
       },
       {
         name: "QChat10",
+        navigation: "QChat10",
       },
     ],
   },
   {
     name: "Listar Prguntas",
     icon: <FontAwesome name="list-ul" size={24} color="black" />,
+    needAuth: true,
     subMenu: [
       {
         name: "MChatR",
+        navigation: "MChatR",
       },
       {
         name: "QChat",
+        navigation: "QChat",
       },
       {
         name: "QChat10",
+        navigation: "QChat10",
+      },
+    ],
+  },
+  {
+    name: "Resultados",
+    icon: <FontAwesome name="list-ul" size={24} color="black" />,
+    needAuth: true,
+    subMenu: [
+      {
+        name: "MChatR",
+        navigation: "MChatR",
+      },
+      {
+        name: "QChat",
+        navigation: "QChat",
+      },
+      {
+        name: "QChat10",
+        navigation: "QChat10",
       },
     ],
   },

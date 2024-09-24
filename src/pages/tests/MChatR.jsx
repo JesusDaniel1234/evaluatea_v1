@@ -1,15 +1,17 @@
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { RadioButton } from "react-native-paper";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import Acordeon from "../../components/Acordeon.jsx";
 import RadioButtonComponent from "../../components/RadioButtonComponent.jsx";
 import { listaContenidosMChatR } from "../../utils/ContenidosAcordeon.js";
 import ProgressBarComponent from "../../components/ProgressBarComponent.jsx";
 import { NavigationButtons } from "../../components/NavigationButtonsComponents.jsx";
 import { useQuestionLogic } from "../../hooks/QuestionLogic.jsx";
-import data from "../../../assets/PruebasTEA-React-Native/mchatr_preguntas.js";
+import Acordeon from "../../components/Acordeon.jsx";
+import QuestionIndex from "../../components/QuestionIndex.jsx";
+import { useLoadQuestionMChatR } from "../../hooks/LoadQuestionsActives.jsx";
+import LoadingSpinnerComponent from "../../components/LoadingSpinnerComponent.jsx";
 
 function MChatR() {
+  const { preguntas, loading } = useLoadQuestionMChatR();
   const {
     cantPreguntas,
     preguntActual,
@@ -19,7 +21,9 @@ function MChatR() {
     AnteriorBoton,
     index,
     indexState,
-  } = useQuestionLogic(data);
+  } = useQuestionLogic(preguntas);
+
+  if (loading) return <LoadingSpinnerComponent />;
 
   return (
     <ScrollView
@@ -36,16 +40,7 @@ function MChatR() {
         );
       })}
       <View style={styles.targetContainer}>
-        <View style={styles.questionNumberContainer}>
-          <Text style={styles.textQuestionNumber}>
-            Pregunta {index + 1} de {cantPreguntas}
-          </Text>
-          <MaterialCommunityIcons
-            name="file-document-edit-outline"
-            size={24}
-            color="black"
-          />
-        </View>
+        <QuestionIndex index={index} cantPreguntas={cantPreguntas} />
 
         <ProgressBarComponent
           index={index}
@@ -54,7 +49,7 @@ function MChatR() {
         />
 
         {preguntActual.map((pregunta) => (
-          <Text key={pregunta.id} style={{ fontSize: 18 }}>
+          <Text key={pregunta.id} style={styles.textContentQuestion}>
             {pregunta.contenido}
           </Text>
         ))}
@@ -100,11 +95,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
   },
-  questionNumberContainer: {
-    justifyContent: "space-between",
-    flexDirection: "row",
-  },
-  textQuestionNumber: {
-    fontSize: 15,
+  textContentQuestion: {
+    fontSize: 18,
   },
 });

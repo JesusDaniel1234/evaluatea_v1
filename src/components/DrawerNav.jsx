@@ -3,6 +3,7 @@ import React from "react";
 import { CustomDrawerContent } from "./CustomDrawerContent";
 import { ListNavigationItems, PublicListTestItems } from "../NavigationItems";
 import { constant } from "../constants/constants";
+import Login from "../pages/auth/Login.jsx";
 
 const Drawer = createDrawerNavigator();
 
@@ -31,12 +32,10 @@ export default function DrawerNav() {
             key={index}
             name={item.name}
             component={item.component}
-            options={
-              {
+            options={{
               headerStyle: { backgroundColor: "#fdce75" },
               drawerType: "slide",
               drawerIcon: () => item.icon,
-              
             }}
           />
         );
@@ -55,6 +54,15 @@ export default function DrawerNav() {
           />
         );
       })}
+      <Drawer.Screen
+        name="Login"
+        component={Login}
+        options={{
+          drawerItemStyle: { display: "none" },
+          headerStyle: { backgroundColor: "#fdce75" },
+          drawerType: "slide",
+        }}
+      />
     </Drawer.Navigator>
   );
 }
