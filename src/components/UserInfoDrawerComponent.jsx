@@ -1,21 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { UserContext } from "../context/UserProvider";
 
-export default function UserInfoDrawerComponent({ navigation, userToken }) {
-  const image = require("../../assets/autism_image.jpg");
-  const userName = "Jesús Daniel Sánchez Alarcón";
-  const profesion = "Ingeniero de Software";
+export default function UserInfoDrawerComponent({ navigation }) {
+  const { userData } = useContext(UserContext);
 
-  if (userToken) {
+  if (userData) {
+    const { imagen_perfil, usuario } = userData;
+    const { email, first_name, last_name } = usuario;
+    const name = first_name + " " + last_name;
     return (
       <TouchableOpacity
         style={styles.userAreaContentAuth}
-        onPress={() => navigation.navigate("Perfil")}
+        onPress={() => navigation.navigate("Profile")}
       >
-        <Image source={image} style={styles.userImageStyle} />
+        <Image source={{ uri: imagen_perfil }} style={styles.userImageStyle} />
         <View style={styles.userContentInfo}>
-          <Text style={styles.userNameContentAuth}>{userName}</Text>
-          <Text>{profesion}</Text>
+          <Text style={styles.userNameContentAuth}>{name}</Text>
+          <Text>{email}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-	userAreaContent: {
+  userAreaContent: {
     paddingVertical: 5,
     paddingHorizontal: 10,
     flexDirection: "row",
@@ -50,6 +52,6 @@ const styles = StyleSheet.create({
   userImageStyle: { height: 80, width: 80, borderRadius: 50 },
   userContentInfo: { justifyContent: "center", paddingHorizontal: 10, flex: 1 },
   userNameContent: { fontWeight: "800", fontSize: 24 },
-	userNameContentAuth:{fontWeight: "500", fontSize: 18},
-	userInfoContent:{fontSize:15}
+  userNameContentAuth: { fontWeight: "500", fontSize: 18 },
+  userInfoContent: { fontSize: 15 },
 });

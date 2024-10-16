@@ -13,11 +13,13 @@ export const ListNavigationItems = [
     name: "Inicio",
     component: Inicio,
     icon: <FontAwesome6 name="house-chimney" size={24} color="black" />,
+    needAuth: false,
   },
   {
     name: "Profile",
     component: Profile,
     icon: <Ionicons name="person" size={24} color="black" />,
+    needAuth: true,
   },
 ];
 
@@ -54,15 +56,15 @@ export const ListLabelsMenu = [
     subMenu: [
       {
         name: "MChatR",
-        navigation: "MChatR",
+        navigation: "ListarPreguntas",
       },
       {
         name: "QChat",
-        navigation: "QChat",
+        navigation: "ListarPreguntas",
       },
       {
         name: "QChat10",
-        navigation: "QChat10",
+        navigation: "ListarPreguntas",
       },
     ],
   },
@@ -73,15 +75,15 @@ export const ListLabelsMenu = [
     subMenu: [
       {
         name: "MChatR",
-        navigation: "MChatR",
+        navigation: "ListarResultados",
       },
       {
         name: "QChat",
-        navigation: "QChat",
+        navigation: "ListarResultados",
       },
       {
         name: "QChat10",
-        navigation: "QChat10",
+        navigation: "ListarResultados",
       },
     ],
   },

@@ -43,3 +43,18 @@ export const actualizarPerfil = (id, datos, token) =>
       withCredentials: true,
     }
   );
+
+  export const actualizarUsuario = (id, datos) =>
+    api.put(
+      `usuarios/actualizar_usuario/${id}`,
+      datos,
+      // {
+      //   headers: {
+      //     Authorization: "Bearer " + token,
+      //     "Content-Type": "application/json",
+      //   },
+      // },
+      // {
+      //   withCredentials: true,
+      // }
+    );

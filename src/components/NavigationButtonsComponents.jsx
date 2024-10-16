@@ -5,6 +5,7 @@ export const NavigationButtons = ({
   totalQuestions,
   onNext,
   onPrevious,
+  openForm,
 }) => (
   <View style={styles.buttonsContainer}>
     {index > 0 && (
@@ -20,7 +21,10 @@ export const NavigationButtons = ({
         <Text style={styles.textColor}>Siguiente</Text>
       </TouchableOpacity>
     ) : (
-      <TouchableOpacity style={styles.touchableStyles}>
+      <TouchableOpacity
+        style={styles.touchableStyles}
+        onPress={() => openForm()}
+      >
         <Text style={styles.textColor}>Guardar Resultados</Text>
       </TouchableOpacity>
     )}

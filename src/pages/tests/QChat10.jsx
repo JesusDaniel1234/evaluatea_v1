@@ -10,9 +10,8 @@ import QuestionIndex from "../../components/QuestionIndex.jsx";
 import { useLoadQuestionQChat10 } from "../../hooks/LoadQuestionsActives.jsx";
 import LoadingSpinnerComponent from "../../components/LoadingSpinnerComponent.jsx";
 
-function QChat10() {
+function QChat10({ navigation }) {
   const { preguntas, loading } = useLoadQuestionQChat10();
-
   const {
     cantPreguntas,
     preguntActual,
@@ -22,7 +21,12 @@ function QChat10() {
     AnteriorBoton,
     index,
     indexState,
-  } = useQuestionLogic(preguntas);
+    abrirFormulario,
+  } = useQuestionLogic({
+    data: preguntas,
+    navigation: navigation,
+    test: "QChat10",
+  });
 
   if (loading) return <LoadingSpinnerComponent />;
 
@@ -71,6 +75,7 @@ function QChat10() {
         ))}
 
         <NavigationButtons
+          openForm={abrirFormulario}
           index={index}
           onPrevious={AnteriorBoton}
           onNext={SiguienteBoton}

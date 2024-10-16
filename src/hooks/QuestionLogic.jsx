@@ -1,25 +1,24 @@
 import { useRef, useState } from "react";
 import { ToastAndroid } from "react-native";
 
-export const useQuestionLogic = (data) => {
+export const useQuestionLogic = ({ data, navigation, test }) => {
   const [checkValue, setCheckValue] = useState(null);
   const [index, setIndex] = useState(0);
   const isChecked = useRef([]);
   const indexState = useRef(0);
 
   const pregunta = data;
-  console.log(data)
+
   const cantPreguntas = pregunta.length;
-  console.log("Cantidad de Preguntas:", cantPreguntas)
+
   const idPreguntas = pregunta.map((pregunta) => pregunta.id);
   const preguntActual = pregunta.filter(
     (pregunta) => pregunta.id === idPreguntas[index]
   );
 
   const SiguienteBoton = () => {
-    console.log(isChecked)
     if (checkValue === null) {
-      showToast("Tiene que marcar Si o No antes de seguir.");
+      showToast("Seleccione una respuesta antes de continuar.");
       return;
     }
     const id = idPreguntas[index];
@@ -49,27 +48,25 @@ export const useQuestionLogic = (data) => {
   };
 
   const handleCheckBoxChange = (value) => {
-    console.log(value);
     setCheckValue(value);
   };
   const showToast = (message) => ToastAndroid.show(message, ToastAndroid.SHORT);
 
-  // const abrirFormulario = (id) => {
-  //   const newValue = {
-  //     id: id,
-  //     value: checkValue,
-  //   };
-  //   isChecked.current = [...isChecked.current, newValue];
+  const abrirFormulario = () => {
+    console.log("Este es check value:", checkValue);
+    if (checkValue === null) {
+      showToast("Seleccione una respuesta antes de continuar.");
+      return;
+    }
 
-  //   showToast("");
-  //   console.log(isChecked);
-  //   if (checkValue !== null) {
-  //
-  //     setCheckValue("");
-  //   } else {
-  //     console.log("error");
-  //   }
-  // };
+    const id = idPreguntas[index];
+    const newValue = { id, value: checkValue };
+    isChecked.current = [...isChecked.current, newValue];
+    console.log("este es el test", test);
+    // abrir formulario
+    navigation.navigate("FromularioTest", { test: test });
+    console.log(isChecked);
+  };
 
   return {
     cantPreguntas,
@@ -82,5 +79,6 @@ export const useQuestionLogic = (data) => {
     isChecked,
     index,
     indexState,
+    abrirFormulario,
   };
 };

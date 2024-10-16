@@ -1,16 +1,10 @@
-import React, { useContext, useEffect } from "react";
 import { Image, StyleSheet, Text, View, ScrollView } from "react-native";
-import { UserContext } from "../context/UserProvider";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Inicio() {
   const imagen = require("../../assets/autism_image.jpg");
-  
-  const { userToken } = useContext(UserContext);
-  console.log(userToken)
+
   return (
     <ScrollView style={styles.contenedorPrincipal}>
-      {userToken && <Text style={styles.textoTitulo}>Bienvenido</Text>}
       <Text style={styles.textoTitulo}>
         ¿Qué es el trastorno del espectro autista (TEA)?
       </Text>
@@ -19,7 +13,6 @@ export default function Inicio() {
           <Image resizeMode="cover" style={styles.imagen} source={imagen} />
           <Text style={styles.textoURL}>https//autism_image-bla-bla-bla</Text>
         </View>
-
         <Text style={styles.textoParrafo}>
           Los trastornos del espectro autista (TEA) son discapacidades del
           desarrollo causadas por diferencias en el cerebro. Algunas personas
