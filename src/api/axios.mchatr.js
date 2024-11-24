@@ -32,7 +32,7 @@ export const actualizarPreguntasMChatR = (id, data, token) =>
     },
   });
 export const eliminarPreguntasMChatR = (id, token) =>
-  api.delete(`mchatr/detalles_preguntas_mchatr/${id}`, {
+  api.delete(`mchatr/detalles_preguntas_mchatr/${id}/`, {
     headers: {
       Authorization: "Bearer " + token,
       "Content-Type": "application/json",

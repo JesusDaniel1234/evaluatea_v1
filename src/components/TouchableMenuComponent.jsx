@@ -20,6 +20,7 @@ export default function TouchableMenuComponent({
   navigation,
 }) {
   const [currentRoute, setCurrentRoute] = useState("Inicio");
+  const [currentParams, setCurrentParams] = useState(null);
   const navigationState = useNavigationState((state) => state);
   const [menuIndex, setMenuIndex] = useState(-1);
   const listaPagesPrincipal = ["Inicio", "Profile"];
@@ -27,6 +28,10 @@ export default function TouchableMenuComponent({
   useEffect(() => {
     if (navigationState) {
       const routeName = navigationState.routes[navigationState.index]?.name;
+      const currentProps =
+        navigation.getState().routes[navigationState.index]?.params;
+        console.log(currentParams)
+      setCurrentParams(currentProps);
       setCurrentRoute(routeName);
       if (listaPagesPrincipal.find((elememt) => routeName === elememt)) {
         setMenuIndex(-1);
@@ -45,6 +50,7 @@ export default function TouchableMenuComponent({
     setMenuIndex(menuIndex === index ? -1 : index);
   };
 
+  
   return (
     <>
       {ListLabelsMenu.map((item, index) => {
@@ -82,7 +88,7 @@ export default function TouchableMenuComponent({
                     >
                       <View style={styles.submenuContentStyle}>
                         <Text style={{ fontWeight: "500" }}>{menu.name}</Text>
-                        {currentRoute === menu.name && (
+                        {(currentRoute === menu.navigation && menu.name === currentParams.test) && (
                           <FontAwesome name="circle" size={10} color="black" />
                         )}
                       </View>

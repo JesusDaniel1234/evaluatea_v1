@@ -24,14 +24,14 @@ export const crearPreguntasQChat10 = (data, token) =>
       "Content-Type": "application/json",
     },
   });
-export const actualizarPreguntasQChat10 = (id, data) =>
+export const actualizarPreguntasQChat10 = (id, data, token) =>
   api.put(`qchat10/actualizar_preguntas_qchat10/${id}/`, data, 
-// {
-//     headers: {
-//       Authorization: "Bearer " + token,
-//       "Content-Type": "application/json",
-//     },
-//   }
+{
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json",
+    },
+  }
 );
 export const eliminarPreguntasQChat10 = (id, token) =>
   api.delete(`qchat10/eliminar_preguntas_qchat10/${id}`, {
@@ -90,6 +90,8 @@ export const detallarRespuestasQChat10 = (id, token) =>
   });
 export const crearRespuestasQChat10 = (data) =>
   api.post("qchat10/crear_respuestas_qchat10/", data);
+
+
 export const actualizarRespuestasQChat10 = (id, data, token) =>
   api.put(`qchat10/actualizar_respuestas_qchat10/${id}/`, data, {
     headers: {

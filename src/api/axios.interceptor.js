@@ -2,7 +2,7 @@ import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
 export const api = axios.create({
-  baseURL: "http://192.168.157.118:8000/api/",
+  baseURL: "http://192.168.109.118:8000/api/",
 });
 
 // let isRefreshing = false;

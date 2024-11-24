@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { ToastAndroid } from "react-native";
+import { conteoPuntos, conteoPuntosQChat } from "../utils/PointsCount";
 
 export const useQuestionLogic = ({ data, navigation, test }) => {
   const [checkValue, setCheckValue] = useState(null);
@@ -15,6 +16,8 @@ export const useQuestionLogic = ({ data, navigation, test }) => {
   const preguntActual = pregunta.filter(
     (pregunta) => pregunta.id === idPreguntas[index]
   );
+
+  console.log(isChecked.current);
 
   const SiguienteBoton = () => {
     if (checkValue === null) {
@@ -53,6 +56,8 @@ export const useQuestionLogic = ({ data, navigation, test }) => {
   const showToast = (message) => ToastAndroid.show(message, ToastAndroid.SHORT);
 
   const abrirFormulario = () => {
+    console.log(isChecked.current);
+
     console.log("Este es check value:", checkValue);
     if (checkValue === null) {
       showToast("Seleccione una respuesta antes de continuar.");
@@ -64,8 +69,26 @@ export const useQuestionLogic = ({ data, navigation, test }) => {
     isChecked.current = [...isChecked.current, newValue];
     console.log("este es el test", test);
     // abrir formulario
-    navigation.navigate("FromularioTest", { test: test });
-    console.log(isChecked);
+    const points = conteoPuntos[test](pregunta, isChecked.current);
+
+    const respuestas = [];
+
+    if (test === "MChatR") {
+      isChecked.current.map((valor) => {
+        respuestas.push({
+          pregunta: valor.id,
+          respuesta: valor.value,
+        });
+      });
+    }
+
+    respuestas.concat(isChecked.current)
+
+    navigation.navigate("FromularioTest", {
+      test: test,
+      points: points,
+      checkedList: respuestas,
+    });
   };
 
   return {

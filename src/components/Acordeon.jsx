@@ -10,8 +10,12 @@ import {
   UIManager,
 } from "react-native";
 
-export default function Acordeon({ texto, titulo }) {
+export default function Acordeon({ elemento }) {
   const [isOpenAcordeon, setIsOpenAcordeon] = useState(false);
+
+  const { titulo, contenido } = elemento;
+
+  console.log(elemento);
 
   // Habilitar LayoutAnimation en Android
   if (Platform.OS === "android") {
@@ -27,14 +31,30 @@ export default function Acordeon({ texto, titulo }) {
   return (
     <TouchableOpacity style={styles.touchableStyle} onPress={toggleAcordeon}>
       <View style={styles.container}>
-        <Text style={styles.title}>{titulo}</Text>
-        {isOpenAcordeon ? (
-          <AntDesign name="down" size={24} color="black" />
-        ) : (
-          <AntDesign name="up" size={24} color="black" />
-        )}
+        <View style={{alignItems:"center", flexDirection:"row", gap:10}}>
+          <AntDesign name="infocirlceo" size={24} color="black" />
+          <Text style={styles.title}>
+          {titulo}
+        </Text>
+        </View>
+        
+        <AntDesign
+          name={isOpenAcordeon ? "down" : "up"}
+          size={24}
+          color="black"
+        />
       </View>
-      {isOpenAcordeon && <Text style={styles.text}>{texto}</Text>}
+      {isOpenAcordeon && (
+        <View>
+          <Text style={styles.text}>{contenido.texto}</Text>
+          {contenido.lista &&
+            contenido.lista.map((item) => (
+              <Text key={item} style={styles.text}>
+                🌀 - {item}
+              </Text>
+            ))}
+        </View>
+      )}
     </TouchableOpacity>
   );
 }
@@ -44,9 +64,9 @@ const styles = StyleSheet.create({
     width: "100%",
     marginBottom: 5,
     padding: 15,
-    borderRadius: 10,
-    borderColor: "black",
-    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: "#6A1E55",
+    borderWidth: 1.3,
   },
   container: {
     flexDirection: "row",

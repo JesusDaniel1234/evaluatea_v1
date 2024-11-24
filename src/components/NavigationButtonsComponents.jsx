@@ -35,15 +35,17 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "flex-end",
-    gap: 4,
+    gap: 10,
     marginTop: 20,
   },
   touchableStyles: {
     padding: 10,
     backgroundColor: "#007BFF",
     borderRadius: 5,
+    paddingHorizontal:17
   },
   textColor: {
     color: "#fff",
+    fontSize:17
   },
 });

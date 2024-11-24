@@ -53,6 +53,7 @@ export default Profile;
 
 const styles = StyleSheet.create({
   containerStyle: {
+    padding: 16,
     alignItems: "center",
   },
   targetStyle: {

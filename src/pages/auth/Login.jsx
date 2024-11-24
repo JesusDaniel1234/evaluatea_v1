@@ -12,8 +12,17 @@ import { UserContext } from "../../context/UserProvider";
 import LoadingSpinnerComponent from "../../components/LoadingSpinnerComponent";
 import { useLoading } from "../../hooks/Loading";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import Entypo from "@expo/vector-icons/Entypo";
+
 const Login = ({ navigation }) => {
   const { signIn } = useContext(UserContext);
+  // State variable to track password visibility
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Function to toggle the password visibility state
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -60,13 +69,28 @@ const Login = ({ navigation }) => {
           </View>
           <View style={styles.inputContainer}>
             <Text style={styles.inputTextContainer}>Contraseña</Text>
-            <TextInput
-              style={styles.inputStyles}
-              placeholder="Password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-            />
+            <View
+              style={[
+                styles.inputStyles,
+                { flexDirection: "row", alignItems: "center" },
+              ]}
+            >
+              <TextInput
+                style={{ flex: 1 }}
+                placeholder="Password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword}
+              />
+
+              <Entypo
+                name={showPassword ? "eye-with-line" : "eye"}
+                size={24}
+                color="black"
+                style={{ marginLeft: 10 }}
+                onPress={toggleShowPassword}
+              />
+            </View>
           </View>
           <TouchableOpacity
             style={styles.buttonContainer}

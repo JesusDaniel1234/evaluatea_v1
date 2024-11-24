@@ -1,6 +1,5 @@
 import { ScrollView, View, StyleSheet, Text } from "react-native";
 import Acordeon from "../../components/Acordeon.jsx";
-import data from "../../../assets/PruebasTEA-React-Native/qchat_preguntas.js";
 import { listaContenidosQChat } from "../../utils/ContenidosAcordeon.js";
 import { useQuestionLogic } from "../../hooks/QuestionLogic.jsx";
 
@@ -12,31 +11,7 @@ import QuestionIndex from "../../components/QuestionIndex.jsx";
 import { useLoadQuestionQChat } from "../../hooks/LoadQuestionsActives.jsx";
 import LoadingSpinnerComponent from "../../components/LoadingSpinnerComponent.jsx";
 
-// Function to count points based on checked answers
-const conteoPuntos = (preguntas, checkedList) => {
-  let puntos = 0;
-
-  for (let i = 0; i < preguntas.length; i++) {
-    const pregunta = preguntas[i];
-    const checkedItem = checkedList.find(
-      (item) => String(pregunta.id) === item.id
-    );
-
-    if (checkedItem) {
-      if (
-        pregunta.rango_riesgo.rango.startsWith("Más") ||
-        pregunta.rango_riesgo.rango.startsWith("Mayor")
-      ) {
-        puntos += Number(checkedItem.value);
-      } else {
-        puntos += 4 - Number(checkedItem.value);
-      }
-    }
-  }
-  return { puntos, checkedList };
-};
-
-function QChat() {
+function QChat({ navigation }) {
   const { preguntas, loading } = useLoadQuestionQChat();
 
   const {
@@ -48,7 +23,12 @@ function QChat() {
     AnteriorBoton,
     index,
     indexState,
-  } = useQuestionLogic(preguntas);
+    abrirFormulario,
+  } = useQuestionLogic({
+    data: preguntas,
+    navigation: navigation,
+    test: "QChat",
+  });
 
   if (loading) return <LoadingSpinnerComponent />;
 
@@ -61,19 +41,20 @@ function QChat() {
         return (
           <Acordeon
             key={index}
-            titulo={elmento.titulo}
-            texto={elmento.contenido}
+            elemento={elmento}
           />
         );
       })}
 
       <View style={styles.targetContainer}>
-        <QuestionIndex index={index} cantPreguntas={cantPreguntas} />
-        <ProgressBarComponent
-          index={index}
-          refIndex={indexState.current}
-          length={cantPreguntas}
-        />
+        <View>
+          <QuestionIndex index={index} cantPreguntas={cantPreguntas} />
+          <ProgressBarComponent
+            index={index}
+            refIndex={indexState.current}
+            length={cantPreguntas}
+          />
+        </View>
 
         {preguntActual.map((pregunta) => (
           <View key={pregunta.id}>
@@ -96,6 +77,7 @@ function QChat() {
         ))}
 
         <NavigationButtons
+          openForm={abrirFormulario}
           index={index}
           onPrevious={AnteriorBoton}
           onNext={SiguienteBoton}
@@ -109,17 +91,15 @@ function QChat() {
 export default QChat;
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-  },
-  contentContainer: {
+  contentContainer: {padding: 16,
+    flex: 1,
     alignItems: "center",
   },
   targetContainer: {
-    padding: 15,
+    padding: 25,
     backgroundColor: "#fff",
     borderRadius: 10,
-    width: "95%",
+    width: "100%",
     marginTop: 10,
     marginBottom: 30,
     shadowColor: "#000",

@@ -2,14 +2,21 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-export default function TargetQuestionComponent({ pregunta, navigation, userToken }) {
+export default function TargetQuestionComponent({
+  pregunta,
+  navigation,
+  userToken,
+  test,
+  testForm,
+}) {
   return (
     <TouchableOpacity
       key={pregunta.id}
       style={styles.preguntaCard}
       onPress={() =>
-        navigation.navigate("FormMChatR", {
+        navigation.navigate(testForm, {
           id: pregunta.id,
+          test: test,
           token: userToken,
         })
       }
@@ -39,7 +46,7 @@ export default function TargetQuestionComponent({ pregunta, navigation, userToke
 
 const styles = StyleSheet.create({
   preguntaCard: {
-		width:160,
+    width: 160,
     backgroundColor: "white",
     padding: 16,
     borderRadius: 10,
@@ -52,7 +59,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     flexDirection: "column",
     justifyContent: "space-between",
-		marginHorizontal:"auto"
+    marginHorizontal: "auto",
   },
   preguntaText: {
     fontSize: 14,

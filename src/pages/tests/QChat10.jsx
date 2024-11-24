@@ -1,6 +1,6 @@
 import { ScrollView, View, StyleSheet, Text } from "react-native";
 import Acordeon from "../../components/Acordeon.jsx";
-import { listaContenidosQChat } from "../../utils/ContenidosAcordeon.js";
+import { listaContenidosQChat10 } from "../../utils/ContenidosAcordeon.js";
 import { useQuestionLogic } from "../../hooks/QuestionLogic.jsx";
 import RadioButtonComponent from "../../components/RadioButtonComponent.jsx";
 import ProgressBarComponent from "../../components/ProgressBarComponent.jsx";
@@ -35,14 +35,8 @@ function QChat10({ navigation }) {
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >
-      {listaContenidosQChat.map((elmento, index) => {
-        return (
-          <Acordeon
-            key={index}
-            titulo={elmento.titulo}
-            texto={elmento.contenido}
-          />
-        );
+      {listaContenidosQChat10.map((elmento, index) => {
+        return <Acordeon key={index} elemento={elmento} />;
       })}
 
       <View style={styles.targetContainer}>
@@ -55,7 +49,7 @@ function QChat10({ navigation }) {
         />
 
         {preguntActual.map((pregunta) => (
-          <View key={pregunta.id}>
+          <View style={{ justifyContent: "space-between" }} key={pregunta.id}>
             <Text style={styles.textContentQuestion}>{pregunta.contenido}</Text>
             <RadioButton.Group
               onValueChange={handleCheckBoxChange}
@@ -89,17 +83,12 @@ function QChat10({ navigation }) {
 export default QChat10;
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-  },
-  contentContainer: {
-    alignItems: "center",
-  },
+  contentContainer: { padding: 16, alignItems: "center", flex: 1 },
   targetContainer: {
-    padding: 15,
+    padding: 25,
     backgroundColor: "#fff",
     borderRadius: 10,
-    width: "95%",
+    width: "100%",
     marginTop: 10,
     marginBottom: 30,
     shadowColor: "#000",

@@ -10,10 +10,11 @@ import useLoadQuestionTests from "../hooks/LoadQuestionTests";
 import { UserContext } from "../context/UserProvider";
 import Acordeon from "../components/Acordeon";
 import LoadingSpinnerComponent from "../components/LoadingSpinnerComponent";
-import { listaContenidosMChatR } from "../utils/ContenidosAcordeon";
+import { infoTests } from "../utils/ContenidosAcordeon";
 import TargetQuestionComponent from "../components/TargetQuestionComponent";
 import { useContext } from "react";
-
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { CircularButton } from "../components/common/CircularButton.jsx";
 function ListQuestionsTests({ navigation, route }) {
   const { userToken } = useContext(UserContext);
   const { preguntas, loading } = useLoadQuestionTests(
@@ -21,10 +22,23 @@ function ListQuestionsTests({ navigation, route }) {
     route.params.test
   );
 
-  const toFormMCHatR = () =>
+  const test = route.params.test;
+
+  const TypeTest = {
+    MChatR: "FormMChatR",
+    QChat: "FormQChat",
+    QChat10: "FormQChat10",
+  };
+
+  const toForm = () =>
     navigation.reset({
       index: 0,
-      routes: [{ name: "FormMChatR", params: { id: null, token: userToken } }],
+      routes: [
+        {
+          name: TypeTest[test],
+          params: { id: null, token: userToken, test: test },
+        },
+      ],
     });
 
   if (loading) return <LoadingSpinnerComponent />;
@@ -35,20 +49,21 @@ function ListQuestionsTests({ navigation, route }) {
         <View style={styles.header}>
           <Text style={styles.title}>Gestión de Preguntas</Text>
         </View>
-        {listaContenidosMChatR.map((elemento, index) => (
-          <Acordeon
-            key={index}
-            titulo={elemento.titulo}
-            texto={elemento.contenido}
-          />
+        {infoTests[test].map((elemento, index) => (
+          <Acordeon key={index} elemento={elemento} />
         ))}
-        <TouchableOpacity style={styles.createButton} onPress={toFormMCHatR}>
+
+        <TouchableOpacity style={styles.createButton} onPress={toForm}>
           <Text style={styles.createButtonText}>Crear Pregunta</Text>
+          <AntDesign name="addfile" size={20} color="white" />
         </TouchableOpacity>
+
         <FlatList
           data={preguntas}
           renderItem={({ item }) => (
             <TargetQuestionComponent
+              testForm={TypeTest[test]}
+              test={test}
               pregunta={item}
               navigation={navigation}
               userToken={userToken}
@@ -96,9 +111,15 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     alignItems: "center",
-    marginBottom: 16,
+    marginTop: 5,
+    marginBottom: 10,
+    width: "50%",
+    flexDirection: "row",
+    gap: 10,
+    justifyContent: "center",
   },
   createButtonText: {
+    fontSize: 16,
     color: "white",
     fontWeight: "bold",
   },

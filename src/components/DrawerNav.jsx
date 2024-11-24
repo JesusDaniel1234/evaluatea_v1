@@ -13,6 +13,10 @@ import ModalFormTest from "./ModalFormTest.jsx";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { TouchableOpacity } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
+import FromQChat from "../pages/FormQChat";
+import FromQChat10 from "../pages/FormQChat10";
+import ResultsTestsDetails from "../pages/ResultsTestsDetails";
+import FormCreatePatient from "../pages/FormCreatePatient";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -20,7 +24,11 @@ const Drawer = createDrawerNavigator();
 export function StackNavigation() {
   const { userToken } = useContext(UserContext);
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        header: false,
+      }}
+    >
       {ListNavigationItems.filter((item) =>
         userToken ? item : item.needAuth !== true
       ).map((item, index) => {
@@ -61,7 +69,6 @@ export function StackNavigation() {
         component={FormMChatR}
         options={{
           title: "Actualizar",
-
           headerStyle: { backgroundColor: "#fdce75" },
         }}
       />
@@ -70,7 +77,6 @@ export function StackNavigation() {
         component={FormProfile}
         options={{
           title: "Actualizar",
-
           headerStyle: { backgroundColor: "#fdce75" },
         }}
       />
@@ -79,7 +85,6 @@ export function StackNavigation() {
         component={ListQuestionsTests}
         options={{
           title: "Listar Preguntas",
-
           headerStyle: { backgroundColor: "#fdce75" },
         }}
       />
@@ -88,7 +93,6 @@ export function StackNavigation() {
         component={ResultsTests}
         options={{
           title: "Resultados",
-
           headerStyle: { backgroundColor: "#fdce75" },
         }}
       />
@@ -109,6 +113,20 @@ export function StackNavigation() {
             </TouchableOpacity>
           ),
         })}
+      />
+      <Stack.Screen
+        name="FromularioTest"
+        component={ModalFormTest}
+        options={{
+          headerStyle: { backgroundColor: "#fdce75" },
+        }}
+      />
+      <Stack.Screen
+        name="FromularioPaciente"
+        component={FormCreatePatient}
+        options={{
+          headerStyle: { backgroundColor: "#fdce75" },
+        }}
       />
     </Stack.Navigator>
   );
@@ -185,6 +203,26 @@ export function DrawerNav() {
         }}
       />
       <Drawer.Screen
+        name="FormQChat"
+        component={FromQChat}
+        options={{
+          title: "Actualizar",
+          drawerItemStyle: { display: "none" },
+          headerStyle: { backgroundColor: "#fdce75" },
+          drawerType: "slide",
+        }}
+      />
+      <Drawer.Screen
+        name="FormQChat10"
+        component={FromQChat10}
+        options={{
+          title: "Actualizar",
+          drawerItemStyle: { display: "none" },
+          headerStyle: { backgroundColor: "#fdce75" },
+          drawerType: "slide",
+        }}
+      />
+      <Drawer.Screen
         name="FormProfile"
         component={FormProfile}
         options={{
@@ -215,6 +253,16 @@ export function DrawerNav() {
         }}
       />
       <Drawer.Screen
+        name="DetallesResultados"
+        component={ResultsTestsDetails}
+        options={{
+          title: "Resultados",
+          drawerItemStyle: { display: "none" },
+          headerStyle: { backgroundColor: "#fdce75" },
+          drawerType: "slide",
+        }}
+      />
+      <Drawer.Screen
         name="StackNavigator"
         component={StackNavigation} // Aquí va el StackNavigator
         options={{
@@ -224,6 +272,15 @@ export function DrawerNav() {
       <Drawer.Screen
         name="FromularioTest"
         component={ModalFormTest}
+        options={{
+          drawerItemStyle: { display: "none" },
+          headerStyle: { backgroundColor: "#fdce75" },
+          drawerType: "front",
+        }}
+      />
+      <Drawer.Screen
+        name="FromularioPaciente"
+        component={FormCreatePatient}
         options={{
           drawerItemStyle: { display: "none" },
           headerStyle: { backgroundColor: "#fdce75" },

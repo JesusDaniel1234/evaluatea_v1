@@ -10,7 +10,7 @@ import QuestionIndex from "../../components/QuestionIndex.jsx";
 import { useLoadQuestionMChatR } from "../../hooks/LoadQuestionsActives.jsx";
 import LoadingSpinnerComponent from "../../components/LoadingSpinnerComponent.jsx";
 
-function MChatR() {
+function MChatR({ navigation }) {
   const { preguntas, loading } = useLoadQuestionMChatR();
   const {
     cantPreguntas,
@@ -21,24 +21,21 @@ function MChatR() {
     AnteriorBoton,
     index,
     indexState,
-  } = useQuestionLogic(preguntas);
+    abrirFormulario,
+  } = useQuestionLogic({
+    data: preguntas,
+    navigation: navigation,
+    test: "MChatR",
+  });
 
   if (loading) return <LoadingSpinnerComponent />;
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.contentContainer}
-    >
+    <ScrollView contentContainerStyle={styles.contentContainer}>
       {listaContenidosMChatR.map((elemento, index) => {
-        return (
-          <Acordeon
-            key={index}
-            titulo={elemento.titulo}
-            texto={elemento.contenido}
-          />
-        );
+        return <Acordeon key={index} elemento={elemento} />;
       })}
+
       <View style={styles.targetContainer}>
         <QuestionIndex index={index} cantPreguntas={cantPreguntas} />
 
@@ -47,22 +44,24 @@ function MChatR() {
           refIndex={indexState.current}
           length={cantPreguntas}
         />
+        <View>
+          {preguntActual.map((pregunta) => (
+            <Text key={pregunta.id} style={styles.textContentQuestion}>
+              {pregunta.contenido}
+            </Text>
+          ))}
 
-        {preguntActual.map((pregunta) => (
-          <Text key={pregunta.id} style={styles.textContentQuestion}>
-            {pregunta.contenido}
-          </Text>
-        ))}
-
-        <RadioButton.Group
-          onValueChange={handleCheckBoxChange}
-          value={checkValue}
-        >
-          <RadioButtonComponent label={"Si"} value={"SI"} />
-          <RadioButtonComponent label={"No"} value={"NO"} />
-        </RadioButton.Group>
+          <RadioButton.Group
+            onValueChange={handleCheckBoxChange}
+            value={checkValue}
+          >
+            <RadioButtonComponent label={"Si"} value={"SI"} />
+            <RadioButtonComponent label={"No"} value={"NO"} />
+          </RadioButton.Group>
+        </View>
 
         <NavigationButtons
+          openForm={abrirFormulario}
           index={index}
           onPrevious={AnteriorBoton}
           onNext={SiguienteBoton}
@@ -76,17 +75,16 @@ function MChatR() {
 export default MChatR;
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-  },
   contentContainer: {
+    padding: 16,
     alignItems: "center",
+    flex: 1,
   },
   targetContainer: {
-    padding: 15,
+    padding: 25,
     backgroundColor: "#fff",
     borderRadius: 10,
-    width: "95%",
+    width: "100%",
     marginTop: 10,
     marginBottom: 30,
     shadowColor: "#000",

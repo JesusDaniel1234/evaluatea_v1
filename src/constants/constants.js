@@ -4,4 +4,5 @@ export const constant = {
   titleFontSize: 24,
   textFontSize: 16,
   subTextFontSize: 14,
-}
+  primaryColor: "#fdce75",
+};

@@ -148,7 +148,12 @@ function FromProfile({ navigation, route }) {
 export default FromProfile;
 
 const styles = StyleSheet.create({
-  container: { justifyContent: "center", alignItems: "center", marginTop: 30 },
+  container: {
+    padding: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 30,
+  },
   targetContainer: {
     padding: 15,
     backgroundColor: "#fff",
