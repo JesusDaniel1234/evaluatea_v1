@@ -1,10 +1,9 @@
 import {
   DrawerContentScrollView,
-  DrawerItemList,
 } from "@react-navigation/drawer";
 import { useNavigation } from "@react-navigation/native";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { ListLabelsMenu } from "../NavigationItems";
+import { ListLabelsMenu, ListNavigationItems } from "../NavigationItems";
 import { useContext } from "react";
 import { constant } from "../constants/constants";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -14,20 +13,15 @@ import TouchableMenuComponent from "./TouchableMenuComponent";
 
 export function CustomDrawerContent(props) {
   const navigation = useNavigation();
-
   const { signOut, userToken } = useContext(UserContext);
-
   function authFuction() {
     if (!userToken) {
       navigation.navigate("Login");
       return;
     }
+
     signOut();
-    Alert.alert("Sesión cerrada con éxito");
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "Inicio" }],
-    });
+    navigation.reset({ index: 0, routes: [{ name: "Inicio" }] });
   }
 
   return (
@@ -42,7 +36,26 @@ export function CustomDrawerContent(props) {
         />
 
         <View style={styles.lineaSpacing} />
-        <DrawerItemList {...props} />
+        {ListNavigationItems.filter((item) =>
+          userToken
+            ? item.name != "Pacientes"
+            : item.needAuth !== true 
+        ).map((item, index) => {
+          return (
+            <TouchableOpacity
+              key={index}
+              style={styles.secondMenuStyles}
+              onPress={() => navigation.navigate(item.name)}
+            >
+              <View style={styles.secondMenuContainer}>
+                <View style={styles.secondMenuDisposition}>
+                  {item.icon}
+                  <Text style={styles.secondMenuLabel}>{item.name}</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
         <View style={styles.lineaSpacing} />
 
         <TouchableMenuComponent
@@ -72,6 +85,31 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     flex: 1,
     justifyContent: "space-between",
+  },
+  secondMenuContainer: {
+    flexDirection: "row",
+    paddingHorizontal: constant.SPACING / 1.8,
+    paddingVertical: constant.SPACING / 1.2,
+    borderRadius: constant.borderRadius,
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#e68a00",
+  },
+  secondMenuStyles: {
+    marginHorizontal: constant.SPACING / 1.7,
+    marginVertical: constant.SPACING / 2.5,
+    borderRadius: constant.borderRadius,
+  },
+  secondMenuDisposition: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 32,
+  },
+  secondMenuLabel: {
+    paddingRight: 10,
+    fontSize: constant.textFontSize,
+    paddingHorizontal: constant.SPACING,
+    fontWeight: "500",
   },
   lineaSpacing: {
     marginVertical: 15,

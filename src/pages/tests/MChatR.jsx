@@ -22,6 +22,7 @@ function MChatR({ navigation }) {
     index,
     indexState,
     abrirFormulario,
+    VolverInicio
   } = useQuestionLogic({
     data: preguntas,
     navigation: navigation,
@@ -31,7 +32,7 @@ function MChatR({ navigation }) {
   if (loading) return <LoadingSpinnerComponent />;
 
   return (
-    <ScrollView contentContainerStyle={styles.contentContainer}>
+    <View style={styles.contentContainer}>
       {listaContenidosMChatR.map((elemento, index) => {
         return <Acordeon key={index} elemento={elemento} />;
       })}
@@ -61,6 +62,7 @@ function MChatR({ navigation }) {
         </View>
 
         <NavigationButtons
+          returnToInit={VolverInicio}
           openForm={abrirFormulario}
           index={index}
           onPrevious={AnteriorBoton}
@@ -68,7 +70,7 @@ function MChatR({ navigation }) {
           totalQuestions={cantPreguntas}
         />
       </View>
-    </ScrollView>
+    </View>
   );
 }
 
@@ -76,6 +78,8 @@ export default MChatR;
 
 const styles = StyleSheet.create({
   contentContainer: {
+    paddingHorizontal: 10,
+    paddingVertical: 10,
     padding: 16,
     alignItems: "center",
     flex: 1,
@@ -92,6 +96,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 5,
+
   },
   textContentQuestion: {
     fontSize: 18,

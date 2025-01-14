@@ -4,6 +4,7 @@ import { listarRespuestasQChat } from "../api/axios.qchat";
 import { listarRespuestasQChat10 } from "../api/axios.qchat10";
 
 export default function useLoadResultsTests(token, test) {
+  
   const [respuestas, setPreguntas] = useState([]);
   const [loading, setLoading] = useState(true);
 

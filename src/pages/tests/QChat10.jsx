@@ -22,6 +22,7 @@ function QChat10({ navigation }) {
     index,
     indexState,
     abrirFormulario,
+    VolverInicio,
   } = useQuestionLogic({
     data: preguntas,
     navigation: navigation,
@@ -69,6 +70,7 @@ function QChat10({ navigation }) {
         ))}
 
         <NavigationButtons
+          returnToInit={VolverInicio}
           openForm={abrirFormulario}
           index={index}
           onPrevious={AnteriorBoton}
@@ -83,7 +85,13 @@ function QChat10({ navigation }) {
 export default QChat10;
 
 const styles = StyleSheet.create({
-  contentContainer: { padding: 16, alignItems: "center", flex: 1 },
+  contentContainer: {
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    padding: 16,
+    alignItems: "center",
+    flex: 1,
+  },
   targetContainer: {
     padding: 25,
     backgroundColor: "#fff",

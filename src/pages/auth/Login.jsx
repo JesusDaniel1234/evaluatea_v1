@@ -13,6 +13,8 @@ import LoadingSpinnerComponent from "../../components/LoadingSpinnerComponent";
 import { useLoading } from "../../hooks/Loading";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Entypo from "@expo/vector-icons/Entypo";
+import { formCommonStyles } from "../../constants/formCommonStyles";
+import TargetCustomContainer from "../../components/TargetCustomContainer";
 
 const Login = ({ navigation }) => {
   const { signIn } = useContext(UserContext);
@@ -35,18 +37,21 @@ const Login = ({ navigation }) => {
     try {
       await signIn(usuario);
       navigation.navigate("Inicio");
-      Alert.alert("Login Successful");
+      Alert.alert(`Sesión Iniciada Correctamente: Bienvenido ${username}`);
     } catch (error) {
       console.log(error);
-      Alert.alert("Error", "Login failed. Please check your credentials.");
+      Alert.alert(
+        "Error",
+        "Ha ocurrido un error al iniciar sesión. Por favor revise sus credenciales."
+      );
     }
   });
 
   if (loading) return <LoadingSpinnerComponent />;
 
   return (
-    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
-      <View style={styles.targetContainer}>
+    <ScrollView contentContainerStyle={styles.conatinerStyle}>
+      <TargetCustomContainer>
         <Text style={styles.presenntationTitle}>
           Bienvenido a EvalúaTEA
           <MaterialCommunityIcons
@@ -56,10 +61,10 @@ const Login = ({ navigation }) => {
           />
         </Text>
         <View style={styles.formContainer}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputTextContainer}>Nombre de Usuario</Text>
+          <View style={formCommonStyles.formGroup}>
+            <Text style={formCommonStyles.subTitle}>Nombre de Usuario</Text>
             <TextInput
-              style={styles.inputStyles}
+              style={formCommonStyles.inputStyles}
               placeholder="Username"
               value={username}
               onChangeText={setUsername}
@@ -67,12 +72,17 @@ const Login = ({ navigation }) => {
               autoCapitalize="none"
             />
           </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputTextContainer}>Contraseña</Text>
+
+          <View style={formCommonStyles.formGroup}>
+            <Text style={formCommonStyles.subTitle}>Contraseña</Text>
             <View
               style={[
-                styles.inputStyles,
-                { flexDirection: "row", alignItems: "center" },
+                formCommonStyles.inputStyles,
+                {
+                  flexDirection: "row",
+                  alignItems: "center",
+                  paddingVertical: 1.5,
+                },
               ]}
             >
               <TextInput
@@ -86,12 +96,13 @@ const Login = ({ navigation }) => {
               <Entypo
                 name={showPassword ? "eye-with-line" : "eye"}
                 size={24}
+                style={{ marginRight: 10 }}
                 color="black"
-                style={{ marginLeft: 10 }}
                 onPress={toggleShowPassword}
               />
             </View>
           </View>
+
           <TouchableOpacity
             style={styles.buttonContainer}
             onPress={handleLogin}
@@ -99,7 +110,7 @@ const Login = ({ navigation }) => {
             <Text style={styles.buttonText}>Iniciar Sesión</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </TargetCustomContainer>
     </ScrollView>
   );
 };
@@ -107,6 +118,7 @@ const Login = ({ navigation }) => {
 export default Login;
 
 const styles = StyleSheet.create({
+  conatinerStyle: { paddingHorizontal: 10, paddingVertical: 10 },
   presenntationTitle: {
     fontSize: 35,
     fontWeight: "500",
@@ -115,21 +127,7 @@ const styles = StyleSheet.create({
     marginVertical: 40,
   },
   titleLogin: { fontSize: 25, fontWeight: "500", marginVertical: 15 },
-  targetContainer: {
-    padding: 15,
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    width: "95%",
-    marginTop: 40,
-    marginBottom: 30,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5,
-  },
   formContainer: {
-    paddingHorizontal: 20,
     marginBottom: 20,
   },
 

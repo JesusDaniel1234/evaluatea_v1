@@ -5,22 +5,37 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
+  Alert,
+  ToastAndroid,
 } from "react-native";
 import TargetCustomContainer from "../components/TargetCustomContainer";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { testDetailsResults } from "../constants/testDetailsResults";
 import LoadingSpinnerComponent from "../components/LoadingSpinnerComponent";
+import { constant } from "../constants/constants";
+import { formCommonStyles } from "../constants/formCommonStyles";
+import Foundation from "@expo/vector-icons/Foundation";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { eliminarRespuestasTest } from "../utils/GestionRespuestasTest";
+
 export default function ResultsTestsDetails({ navigation, route }) {
   const test = route.params.test;
   const token = route.params.token;
   const id = route.params.id;
-
   const [respuestas, setRespuestas] = useState([]);
   const [datosPersonales, setDatosPersonales] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity
+          style={{ padding: 10 }}
+          onPress={() => navigation.goBack()}
+        >
+          <AntDesign name="arrowleft" size={30} color="black" />
+        </TouchableOpacity>
+      ),
+    });
     async function loadResults() {
       setLoading(true);
       try {
@@ -37,72 +52,110 @@ export default function ResultsTestsDetails({ navigation, route }) {
     loadResults();
   }, [test, token, id]);
 
+  const handleDelete = async () => {
+    Alert.alert("Confirmación", "¿Estás Seguro?", [
+      {
+        text: "Cancelar",
+        style: "cancel",
+      },
+      {
+        text: "Eliminar",
+        onPress: async () => {
+          console.log(test, id, token);
+          await eliminarRespuestasTest[test](id, token);
+
+          ToastAndroid.show("Respuesta Eliminada", ToastAndroid.SHORT);
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "ListarResultados", params: { test: test } }],
+          });
+        },
+        style: "destructive",
+      },
+    ]);
+  };
+
   if (loading) return <LoadingSpinnerComponent />;
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView style={styles.container}>
       <TargetCustomContainer>
-        <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("ListarResultados", { test: test })
-            }
-            style={styles.backButton}
-          >
-            <AntDesign name="arrowleft" size={24} color="black" />
-          </TouchableOpacity>
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>Resultados-Tests {test}</Text>
-          </View>
-          <TouchableOpacity style={styles.deleteButton}>
-            <FontAwesome name="trash-o" size={24} color="black" />
-          </TouchableOpacity>
+        <View style={[formCommonStyles.header, { marginBottom: 15 }]}>
+          <Text style={styles.title}>Resultados-Tests {test}</Text>
+          <Foundation
+            name="results-demographics"
+            size={30}
+            color={constant.primaryColor}
+          />
         </View>
 
-        {datosPersonales &&
-          datosPersonales.map((datos) => (
-            <View key={datos.id} style={styles.infoContainer}>
-              <Text>
-                <Text style={styles.label}>CI: </Text>
-                01062279907
-              </Text>
-              <Text>
-                <Text style={styles.label}>Paciente: </Text>
-                {datos.nombre_paciente}
-              </Text>
-              <Text>
-                <Text style={styles.label}>Edad en meses: </Text>
-                {datos.edad_paciente_meses}
-              </Text>
-              <Text>
-                <Text style={styles.label}>Tutor: </Text> {datos.nombre_tutor}
-              </Text>
-            </View>
-          ))}
-        <View style={styles.scoreContainer}>
-          <Text style={styles.scoreText}>
-            <Text style={styles.label}>Puntuación de Riesgo:</Text>{" "}
-            {respuestas.puntuacion}
-          </Text>
+        <View style={styles.responsesContent}>
+          
+          {datosPersonales &&
+            datosPersonales.map((datos) => (
+              <View key={datos.id} style={{ width: "85%" }}>
+                <Text style={{ fontSize: 13 }}>
+                  <Text style={styles.label}>CI: </Text>
+                  01062279907
+                </Text>
+                <Text style={{ fontSize: 13 }}>
+                  <Text style={styles.label}>Paciente: </Text>
+                  {datos.nombre_paciente}
+                </Text>
+                <Text style={{ fontSize: 13 }}>
+                  <Text style={styles.label}>Edad en meses: </Text>
+                  {datos.edad_paciente_meses}
+                </Text>
+                <Text style={{ fontSize: 13 }}>
+                  <Text style={styles.label}>Tutor: </Text> {datos.nombre_tutor}
+                </Text>
+              </View>
+            ))}
+          <View style={styles.scoreContainer}>
+            <Text
+              style={{
+                textAlign: "center",
+                color: "white",
+                fontSize: 10,
+                marginVertical: 0,
+              }}
+            >
+              Puntos
+            </Text>
+            <Text style={styles.scoreText}>{respuestas.puntuacion}</Text>
+          </View>
         </View>
         <View>
-          <Text style={styles.subTitle}>Respuestas a las preguntas:</Text>
+          <Text style={styles.subTitle}>Respuestas:</Text>
           {respuestas &&
             respuestas.respuestas.map((pregunta, index) => (
               <View key={pregunta.id} style={styles.questionContainer}>
-                <Text>
-                  <Text style={styles.label}>{index + 1} -</Text>{" "}
-                  {pregunta.pregunta.contenido}
+                <Text style={{ fontSize: 14 }}>
+                  {index + 1} - {pregunta.pregunta.contenido}
                 </Text>
                 <Text style={styles.answerText}>
-                  <Text style={styles.label}>Respuesta - </Text>
                   {test === "MChatR"
-                    ? pregunta.respuesta
+                    ? pregunta.respuesta.toLowerCase()
                     : pregunta.respuesta.valor}
                 </Text>
+
                 <View style={styles.separator}></View>
               </View>
             ))}
+          <View style={formCommonStyles.buttonContainer}>
+            <TouchableOpacity
+              style={formCommonStyles.cancelButton}
+              onPress={() => navigation.goBack()}
+            >
+              <Text style={formCommonStyles.buttonTextCancel}>Volver</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={formCommonStyles.deleteButton}
+              onPress={handleDelete}
+            >
+              <Text style={formCommonStyles.buttonTextDelete}>Eliminar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </TargetCustomContainer>
     </ScrollView>
@@ -111,56 +164,50 @@ export default function ResultsTestsDetails({ navigation, route }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 16,
-    alignItems: "center",
-  },
-
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  titleContainer: {
-    flex: 1,
-    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
+    color: constant.primaryColor,
   },
-  deleteButton: {
-    backgroundColor: "red",
-    padding: 10,
-    borderRadius: 5,
-  },
-  infoContainer: {
-    marginBottom: 15,
+  responsesContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   label: {
     fontWeight: "bold",
   },
+
   scoreContainer: {
-    marginVertical: 10,
+    backgroundColor: "red",
+    borderRadius: 4,
+    width: "15%",
+    paddingVertical: 5,
   },
   scoreText: {
-    fontSize: 16,
-    color: "red",
+    fontSize: 26,
+    color: "white",
+    fontWeight: "600",
+    textAlign: "center",
   },
   subTitle: {
     fontSize: 16,
     fontWeight: "bold",
-    marginVertical: 10,
-  },
-  questionContainer: {
-    marginBottom: 15,
+    paddingTop: 10,
   },
   answerText: {
     color: "blue",
+    fontSize: 18,
+    fontWeight: "500",
+    textAlign: "right",
+    paddingHorizontal: 10,
   },
   separator: {
-    height: 1,
-    backgroundColor: "gray",
-    marginVertical: 10,
+    height: 3,
+    backgroundColor: constant.primaryColor,
+    marginVertical: 5,
   },
 });

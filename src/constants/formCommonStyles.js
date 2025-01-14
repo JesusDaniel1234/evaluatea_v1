@@ -17,7 +17,7 @@ export const formCommonStyles = StyleSheet.create({
     marginBottom: 15,
   },
   subTitle: {
-    fontSize:15,
+    fontSize: 15,
     marginBottom: -9,
     zIndex: 10,
     backgroundColor: "white",
@@ -50,6 +50,12 @@ export const formCommonStyles = StyleSheet.create({
     borderRadius: 4,
     width: "50%",
   },
+  deleteButton: {
+    backgroundColor: "red",
+    padding: 12,
+    borderRadius: 4,
+    width: "50%",
+  },
   buttonTextSubmit: {
     fontSize: 18,
     color: "#fff",
@@ -59,6 +65,12 @@ export const formCommonStyles = StyleSheet.create({
   buttonTextCancel: {
     fontSize: 18,
     color: "#007bff",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  buttonTextDelete: {
+    fontSize: 18,
+    color: "#fff",
     fontWeight: "bold",
     textAlign: "center",
   },

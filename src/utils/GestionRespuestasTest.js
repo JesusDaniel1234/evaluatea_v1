@@ -1,14 +1,17 @@
 import {
   crearRespuestasMChatR,
   crearRespuestasTutorMChatR,
+  eliminarRespuestasMChatR,
 } from "../api/axios.mchatr";
 import {
   crearRespuestasQChat,
   crearRespuestasTutorQChat,
+  eliminarRespuestasQChat,
 } from "../api/axios.qchat";
 import {
   crearRespuestasQChat10,
   crearRespuestasTutorQChat10,
+  eliminarRespuestasQChat10,
 } from "../api/axios.qchat10";
 
 const crearRespuestasTutor = {
@@ -23,4 +26,9 @@ const crearRespuestas = {
   QChat10: crearRespuestasQChat10,
 };
 
-export { crearRespuestas, crearRespuestasTutor };
+const eliminarRespuestasTest = {
+  MChatR: eliminarRespuestasMChatR,
+  QChat: eliminarRespuestasQChat,
+  QChat10: eliminarRespuestasQChat10,
+};
+export { crearRespuestas, crearRespuestasTutor, eliminarRespuestasTest };

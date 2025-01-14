@@ -2,20 +2,16 @@ import { NavigationContainer } from "@react-navigation/native";
 import { DrawerNav } from "./src/components/DrawerNav";
 import UserProvider from "./src/context/UserProvider";
 import { SQLiteProvider } from "expo-sqlite";
-import "react-native-gesture-handler"
 
 export default function App() {
   return (
-    <UserProvider>
-      <SQLiteProvider
-        databaseName="patient.db"
-        onInit={migrateDbIfNeeded}
-      >
-        <NavigationContainer>
+    <SQLiteProvider databaseName="patient.db" onInit={migrateDbIfNeeded}>
+      <NavigationContainer>
+        <UserProvider>
           <DrawerNav />
-        </NavigationContainer>
-      </SQLiteProvider>
-    </UserProvider>
+        </UserProvider>
+      </NavigationContainer>
+    </SQLiteProvider>
   );
 }
 

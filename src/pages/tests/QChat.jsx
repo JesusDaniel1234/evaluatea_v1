@@ -24,6 +24,7 @@ function QChat({ navigation }) {
     index,
     indexState,
     abrirFormulario,
+    VolverInicio,
   } = useQuestionLogic({
     data: preguntas,
     navigation: navigation,
@@ -38,12 +39,7 @@ function QChat({ navigation }) {
       contentContainerStyle={styles.contentContainer}
     >
       {listaContenidosQChat.map((elmento, index) => {
-        return (
-          <Acordeon
-            key={index}
-            elemento={elmento}
-          />
-        );
+        return <Acordeon key={index} elemento={elmento} />;
       })}
 
       <View style={styles.targetContainer}>
@@ -77,6 +73,7 @@ function QChat({ navigation }) {
         ))}
 
         <NavigationButtons
+          returnToInit={VolverInicio}
           openForm={abrirFormulario}
           index={index}
           onPrevious={AnteriorBoton}
@@ -91,7 +88,10 @@ function QChat({ navigation }) {
 export default QChat;
 
 const styles = StyleSheet.create({
-  contentContainer: {padding: 16,
+  contentContainer: {
+    padding: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
     flex: 1,
     alignItems: "center",
   },

@@ -21,6 +21,8 @@ import {
 } from "../api/axios.qchat10";
 import { useFormLogicTest } from "../hooks/FormLogicTests";
 import LoadingSpinnerComponent from "../components/LoadingSpinnerComponent";
+import { formCommonStyles } from "../constants/formCommonStyles";
+import TargetCustomContainer from "../components/TargetCustomContainer";
 
 function FromQChat10({ navigation, route }) {
   const {
@@ -31,13 +33,19 @@ function FromQChat10({ navigation, route }) {
   } = useForm();
   const params = route.params || {};
   const { userData } = useContext(UserContext);
-  const { loading, tipoRiesgo, rangoRiesgo, valorRiesgo, targetValue, setTargetValue } =
-    useFormLogicTest({
-      setValue,
-      id: params.id,
-      token: params.token,
-      test: params.test,
-    });
+  const {
+    loading,
+    tipoRiesgo,
+    rangoRiesgo,
+    valorRiesgo,
+    targetValue,
+    setTargetValue,
+  } = useFormLogicTest({
+    setValue,
+    id: params.id,
+    token: params.token,
+    test: params.test,
+  });
 
   console.log(params.test);
   const nuevosRangoRiesgos = rangoRiesgo.filter(
@@ -113,27 +121,14 @@ function FromQChat10({ navigation, route }) {
       },
     ]);
   };
-  
+
   if (loading) return <LoadingSpinnerComponent />;
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.targetConatiner}>
-        <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.reset({
-                index: 0,
-                routes: [
-                  { name: "ListarPreguntas", params: { test: "QChat10" } },
-                ],
-              })
-            }
-            style={styles.backButton}
-          >
-            <AntDesign name="arrowleft" size={24} color="black" />
-          </TouchableOpacity>
-          <Text style={styles.title}>Crear Pregunta</Text>
+      <TargetCustomContainer>
+        <View style={formCommonStyles.header}>
+          <Text style={formCommonStyles.titleHeader}>Crear Pregunta</Text>
           {params.id && (
             <TouchableOpacity
               onPress={handleDelete}
@@ -145,15 +140,15 @@ function FromQChat10({ navigation, route }) {
         </View>
 
         <View style={styles.form}>
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>Contenido</Text>
+          <View style={formCommonStyles.formGroup}>
+            <Text style={formCommonStyles.subTitle}>Contenido</Text>
             <Controller
               control={control}
               name="contenido"
               rules={{ required: true }}
               render={({ field: { onChange, value } }) => (
                 <TextInput
-                  style={styles.textArea}
+                  style={formCommonStyles.inputStyles}
                   multiline
                   numberOfLines={5}
                   value={value}
@@ -163,41 +158,32 @@ function FromQChat10({ navigation, route }) {
             />
 
             {errors.contenido && (
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 5,
-                  marginTop: 2,
-                }}
-              >
+              <View style={formCommonStyles.errorContainer}>
                 <AntDesign name="warning" size={12} color="black" />
-                <Text style={styles.errorText}>
-                  Falta el contenido de la Pregunta
+                <Text style={formCommonStyles.errorText}>
+                  Falta el contenido de Pregunta
                 </Text>
               </View>
             )}
           </View>
 
-          <View style={{ marginVertical: 10 }}>
+          <View style={formCommonStyles.formGroup}>
+            <Text style={formCommonStyles.subTitle}>Tipo de Riesgo</Text>
             <Controller
               control={control}
               name="tipo_riesgo"
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <Dropdown
-                  style={{
-                    padding: 10,
-                    backgroundColor: "#D3D3D3",
-                    borderRadius: 4,
-                  }}
+                  style={formCommonStyles.inputStyles}
                   placeholderStyle={{
-                    fontSize: 16,
+                    fontSize: 15,
+                    color: "gray",
                   }}
                   itemContainerStyle={{
                     borderRadius: 4,
                   }}
-                  containerStyle={{ borderRadius: 20 }}
+                  containerStyle={formCommonStyles.formGroup}
                   value={value}
                   placeholder={"Seleccione el Tipo de Riesgo"}
                   data={tipoRiesgo}
@@ -213,23 +199,16 @@ function FromQChat10({ navigation, route }) {
               )}
             />
             {errors.tipo_riesgo && (
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 5,
-                  marginTop: 2,
-                }}
-              >
+              <View style={formCommonStyles.errorContainer}>
                 <AntDesign name="warning" size={12} color="black" />
-                <Text style={styles.errorText}>
+                <Text style={formCommonStyles.errorText}>
                   No ha selecionado el tipo de riesgo
                 </Text>
               </View>
             )}
           </View>
 
-          <View style={{ marginVertical: 10 }}>
+          <View style={formCommonStyles.formGroup}>
             <View
               style={{
                 flexDirection: "row",
@@ -244,12 +223,12 @@ function FromQChat10({ navigation, route }) {
                 rules={{ required: true }}
                 render={({ field: { value, onChange } }) => (
                   <Dropdown
-                    style={{
-                      padding: 10,
-                      backgroundColor: "#D3D3D3",
-                      borderRadius: 4,
-                      flex: 0.7,
-                    }}
+                    style={[
+                      formCommonStyles.inputStyles,
+                      {
+                        flex: 0.7,
+                      },
+                    ]}
                     placeholderStyle={{
                       fontSize: 16,
                     }}
@@ -266,21 +245,16 @@ function FromQChat10({ navigation, route }) {
             </View>
             <Text style={styles.label}>se toma como riesgo.</Text>
             {errors.valor_riesgo && (
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 5,
-                  marginTop: 2,
-                }}
-              >
+              <View style={formCommonStyles.errorContainer}>
                 <AntDesign name="warning" size={12} color="black" />
-                <Text style={styles.errorText}>No ha selecionado el Valor</Text>
+                <Text style={formCommonStyles.errorText}>
+                  No ha selecionado el Valor
+                </Text>
               </View>
             )}
           </View>
 
-          <View style={{ marginVertical: 10 }}>
+          <View style={formCommonStyles.formGroup}>
             <View
               style={{
                 flexDirection: "row",
@@ -295,12 +269,12 @@ function FromQChat10({ navigation, route }) {
                 rules={{ required: true }}
                 render={({ field: { value, onChange } }) => (
                   <Dropdown
-                    style={{
-                      padding: 10,
-                      backgroundColor: "#D3D3D3",
-                      borderRadius: 4,
-                      flex: 0.7,
-                    }}
+                    style={[
+                      formCommonStyles.inputStyles,
+                      {
+                        flex: 0.7,
+                      },
+                    ]}
                     placeholderStyle={{
                       fontSize: 16,
                     }}
@@ -317,16 +291,11 @@ function FromQChat10({ navigation, route }) {
             </View>
             <Text style={styles.label}>es más riesgoso.</Text>
             {errors.valor_riesgo && (
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 5,
-                  marginTop: 2,
-                }}
-              >
+              <View style={formCommonStyles.errorContainer}>
                 <AntDesign name="warning" size={12} color="black" />
-                <Text style={styles.errorText}>No ha selecionado el Rango</Text>
+                <Text style={formCommonStyles.errorText}>
+                  No ha selecionado el Rango
+                </Text>
               </View>
             )}
           </View>
@@ -346,49 +315,39 @@ function FromQChat10({ navigation, route }) {
             />
           </View>
 
-          <View style={styles.buttonContainer}>
+          <View style={formCommonStyles.buttonContainer}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.reset({
+                  index: 0,
+                  routes: [
+                    { name: "ListarPreguntas", params: { test: "QChat10" } },
+                  ],
+                })
+              }
+              style={formCommonStyles.cancelButton}
+            >
+              <Text style={formCommonStyles.buttonTextCancel}>Cancelar</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={handleSubmit(onSubmit)}
-              style={styles.submitButton}
+              style={formCommonStyles.submitButton}
             >
-              <Text style={styles.buttonText}>
+              <Text style={formCommonStyles.buttonTextSubmit}>
                 {params.id ? "Actualizar" : "Crear"}
               </Text>
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </TargetCustomContainer>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 16,
-    alignItems: "center",
-  },
-  targetConatiner: {
-    padding: 25,
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    width: "95%",
-    marginTop: 10,
-    marginBottom: 30,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
 
   deleteButton: {
@@ -399,28 +358,11 @@ const styles = StyleSheet.create({
   form: {
     marginBottom: 24,
   },
-  formGroup: {
-    marginBottom: 10,
-  },
   label: {
     fontSize: 16,
     marginBottom: 4,
   },
-  textArea: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 4,
-    padding: 8,
-    textAlignVertical: "top",
-    backgroundColor: "#fff",
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 4,
-    padding: 8,
-    backgroundColor: "#fff",
-  },
+
   description: {
     fontSize: 14,
     color: "#888",
@@ -432,25 +374,6 @@ const styles = StyleSheet.create({
 
   checkboxLabel: {
     fontSize: 16,
-  },
-  buttonContainer: {
-    marginTop: 16,
-    flexDirection: "row",
-    justifyContent: "flex-end",
-  },
-  submitButton: {
-    backgroundColor: "#007bff",
-    padding: 12,
-    borderRadius: 4,
-  },
-  buttonText: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  errorText: {
-    color: "red",
-    fontSize: 12,
-    fontStyle: "italic",
   },
 });
 

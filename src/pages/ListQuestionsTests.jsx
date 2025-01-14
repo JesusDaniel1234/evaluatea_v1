@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  StyleSheet,
-  FlatList,
-} from "react-native";
+import { View, Text, ScrollView, StyleSheet, FlatList } from "react-native";
 import useLoadQuestionTests from "../hooks/LoadQuestionTests";
 import { UserContext } from "../context/UserProvider";
 import Acordeon from "../components/Acordeon";
@@ -14,7 +7,8 @@ import { infoTests } from "../utils/ContenidosAcordeon";
 import TargetQuestionComponent from "../components/TargetQuestionComponent";
 import { useContext } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { CircularButton } from "../components/common/CircularButton.jsx";
+import CircularButton from "../components/common/CircularButton.jsx";
+
 function ListQuestionsTests({ navigation, route }) {
   const { userToken } = useContext(UserContext);
   const { preguntas, loading } = useLoadQuestionTests(
@@ -44,46 +38,59 @@ function ListQuestionsTests({ navigation, route }) {
   if (loading) return <LoadingSpinnerComponent />;
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.innerContainer}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Gestión de Preguntas</Text>
+    <View style={{ flex: 1 }}>
+      <CircularButton onPress={toForm}>
+        <View style={styles.buttonStyle}>
+          <Text style={styles.createButtonText}>
+            <AntDesign name="plus" size={30} color="white" />
+          </Text>
         </View>
-        {infoTests[test].map((elemento, index) => (
-          <Acordeon key={index} elemento={elemento} />
-        ))}
+      </CircularButton>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.innerContainer}>
+          <View style={{ marginBottom: 10 }}>
+            {infoTests[test].map((elemento, index) => (
+              <Acordeon key={index} elemento={elemento} />
+            ))}
+          </View>
 
-        <TouchableOpacity style={styles.createButton} onPress={toForm}>
-          <Text style={styles.createButtonText}>Crear Pregunta</Text>
-          <AntDesign name="addfile" size={20} color="white" />
-        </TouchableOpacity>
-
-        <FlatList
-          data={preguntas}
-          renderItem={({ item }) => (
-            <TargetQuestionComponent
-              testForm={TypeTest[test]}
-              test={test}
-              pregunta={item}
-              navigation={navigation}
-              userToken={userToken}
-            />
+          {preguntas.length === 0 && (
+            <Text
+              style={{
+                fontWeight: "500",
+                textAlign: "center",
+                paddingVertical: 10,
+                fontSize: 20,
+              }}
+            >
+              No hay preguntas
+            </Text>
           )}
-          keyExtractor={(item) => item.id}
-          scrollEnabled={false}
-          numColumns={2}
-        />
-      </View>
-    </ScrollView>
+
+          <FlatList
+            data={preguntas}
+            renderItem={({ item }) => (
+              <TargetQuestionComponent
+                testForm={TypeTest[test]}
+                test={test}
+                pregunta={item}
+                navigation={navigation}
+                userToken={userToken}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+            scrollEnabled={false}
+            numColumns={2}
+          />
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 
 export default ListQuestionsTests;
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-  },
   innerContainer: {
     width: "100%",
     padding: 16,
@@ -106,21 +113,24 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     textAlign: "center",
   },
-  createButton: {
-    backgroundColor: "#007bff",
-    padding: 12,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 5,
-    marginBottom: 10,
-    width: "50%",
-    flexDirection: "row",
-    gap: 10,
+  buttonStyle: {
+    backgroundColor: "#181818",
     justifyContent: "center",
+    width: 60,
+    borderRadius: 50,
+    height: 60,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 2,
   },
   createButtonText: {
-    fontSize: 16,
-    color: "white",
-    fontWeight: "bold",
+    textAlign: "center",
+    justifyContent: "center",
+    fontSize: 30,
   },
 });

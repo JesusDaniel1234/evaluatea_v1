@@ -6,28 +6,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { FlatList } from "react-native";
 import PatientItem from "../components/patient/PatientItem";
 import LoadingSpinnerComponent from "../components/LoadingSpinnerComponent";
-
-const useLoadLocalBDdata = () => {
-  const db = useSQLiteContext();
-  const [patients, setPatients] = useState([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    async function loadData() {
-      try {
-        setLoading(true);
-        const result = await db.getAllAsync("SELECT * FROM patient");
-        setPatients(result);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadData();
-  }, [db]);
-
-  return { db, patients, loading };
-};
+import { useLoadLocalBDdata } from "../hooks/LoadPatientsDb";
 
 export default function Patient({ navigation }) {
   const { db, patients, loading } = useLoadLocalBDdata();
@@ -43,8 +22,18 @@ export default function Patient({ navigation }) {
           </Text>
         </View>
       </CircularButton>
+
       {patients.length === 0 && (
-        <Text style={{ fontWeight: "500" }}>No hay Pacientes</Text>
+        <Text
+          style={{
+            fontWeight: "500",
+            textAlign: "center",
+            paddingVertical: 10,
+            fontSize: 20,
+          }}
+        >
+          No hay Pacientes
+        </Text>
       )}
       <FlatList
         data={patients}

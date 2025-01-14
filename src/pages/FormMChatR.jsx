@@ -22,6 +22,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import LoadingSpinnerComponent from "../components/LoadingSpinnerComponent";
 import { useFormLogicTestMChatR } from "../hooks/FromLogicTestMChatR";
 import { formCommonStyles } from "../constants/formCommonStyles";
+import TargetCustomContainer from "../components/TargetCustomContainer";
 
 function FormMChatR({ navigation, route }) {
   const {
@@ -87,7 +88,7 @@ function FormMChatR({ navigation, route }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.targetConatiner}>
+      <TargetCustomContainer>
         <View style={formCommonStyles.header}>
           <Text style={formCommonStyles.titleHeader}>Crear Pregunta</Text>
           {params.id && (
@@ -129,24 +130,22 @@ function FormMChatR({ navigation, route }) {
           </View>
 
           <View>
+            <Text style={formCommonStyles.subTitle}>Respuesta de Riesgo</Text>
             <Controller
               control={control}
               name="respuesta_riesgo"
               rules={{ required: true }}
               render={({ field: { onChange, value } }) => (
                 <Dropdown
-                  style={{
-                    padding: 10,
-                    backgroundColor: "#D3D3D3",
-                    borderRadius: 4,
-                  }}
+                  style={formCommonStyles.inputStyles}
                   placeholderStyle={{
-                    fontSize: 16,
+                    fontSize: 15,
+                    color: "gray",
                   }}
                   itemContainerStyle={{
                     borderRadius: 4,
                   }}
-                  containerStyle={{ borderRadius: 4 }}
+                  containerStyle={formCommonStyles.form}
                   value={value}
                   placeholder={"Seleccione el Valor de Riesgo"}
                   data={pickers}
@@ -206,15 +205,15 @@ function FormMChatR({ navigation, route }) {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </TargetCustomContainer>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 16,
-    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
   targetConatiner: {
     padding: 25,

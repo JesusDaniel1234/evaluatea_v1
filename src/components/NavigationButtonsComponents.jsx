@@ -1,4 +1,7 @@
 import { StyleSheet, TouchableOpacity, Text, View } from "react-native";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { formCommonStyles } from "../constants/formCommonStyles";
+import Feather from "@expo/vector-icons/Feather";
 
 export const NavigationButtons = ({
   index,
@@ -6,46 +9,54 @@ export const NavigationButtons = ({
   onNext,
   onPrevious,
   openForm,
+  returnToInit,
 }) => (
-  <View style={styles.buttonsContainer}>
+  <View style={[formCommonStyles.buttonContainer, { marginTop: 30, justifyContent:"flex-end" }]}>
     {index > 0 && (
-      <TouchableOpacity
-        onPress={() => onPrevious()}
-        style={styles.touchableStyles}
-      >
-        <Text style={styles.textColor}>Anterior</Text>
-      </TouchableOpacity>
+      <>
+        <TouchableOpacity
+          onPress={() => returnToInit()}
+          style={styles.touchableStyles}
+        >
+          <AntDesign name="reload1" size={24} color="red" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => onPrevious()}
+          style={[formCommonStyles.cancelButton, { flex: 0.45 }]}
+        >
+          <Text style={formCommonStyles.buttonTextCancel}>Anterior</Text>
+        </TouchableOpacity>
+      </>
     )}
     {index < totalQuestions - 1 ? (
-      <TouchableOpacity onPress={() => onNext()} style={styles.touchableStyles}>
-        <Text style={styles.textColor}>Siguiente</Text>
+      <TouchableOpacity
+        onPress={() => onNext()}
+        style={[formCommonStyles.submitButton, { flex: 0.45 }]}
+      >
+        <Text style={formCommonStyles.buttonTextSubmit}>Siguiente</Text>
       </TouchableOpacity>
     ) : (
       <TouchableOpacity
-        style={styles.touchableStyles}
+        style={[formCommonStyles.submitButton, { flex: 0.45 }]}
         onPress={() => openForm()}
       >
-        <Text style={styles.textColor}>Guardar Resultados</Text>
+        <Feather
+          style={{ textAlign: "center" }}
+          name="send"
+          size={24}
+          color="white"
+        />
       </TouchableOpacity>
     )}
   </View>
 );
 
 const styles = StyleSheet.create({
-  buttonsContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    gap: 10,
-    marginTop: 20,
-  },
   touchableStyles: {
-    padding: 10,
-    backgroundColor: "#007BFF",
-    borderRadius: 5,
-    paddingHorizontal:17
-  },
-  textColor: {
-    color: "#fff",
-    fontSize:17
+    borderWidth: 1,
+    borderColor: "red",
+    padding: 12,
+    borderRadius: 4,
+    flex: 0.1,
   },
 });

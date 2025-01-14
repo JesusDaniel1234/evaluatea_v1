@@ -12,7 +12,7 @@ export default function UserInfoDrawerComponent({ navigation }) {
     return (
       <TouchableOpacity
         style={styles.userAreaContentAuth}
-        onPress={() => navigation.navigate("Profile")}
+        onPress={() => navigation.navigate("Perfil")}
       >
         <Image source={{ uri: imagen_perfil }} style={styles.userImageStyle} />
         <View style={styles.userContentInfo}>

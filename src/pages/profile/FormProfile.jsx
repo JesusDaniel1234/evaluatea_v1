@@ -11,6 +11,8 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../context/UserProvider";
+import TargetCustomContainer from "../../components/TargetCustomContainer";
+import { formCommonStyles } from "../../constants/formCommonStyles";
 
 function FromProfile({ navigation, route }) {
   const { onSubmit } = useContext(UserContext);
@@ -38,7 +40,7 @@ function FromProfile({ navigation, route }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.targetContainer}>
+      <TargetCustomContainer>
         <View
           style={{
             flexDirection: "row",
@@ -65,15 +67,15 @@ function FromProfile({ navigation, route }) {
           </View>
         </View>
 
-        <View>
-          <Text style={styles.subTitle}>Nombre Usuario</Text>
+        <View style={formCommonStyles.formGroup}>
+          <Text style={formCommonStyles.subTitle}>Nombre Usuario</Text>
           <Controller
             name="username"
             control={control}
             defaultValue={username}
             render={({ field: { onChange, value } }) => (
               <TextInput
-                style={styles.inputStyles}
+                style={formCommonStyles.inputStyles}
                 value={value}
                 placeholder="Username"
                 onChangeText={(value) => onChange(value)}
@@ -82,15 +84,15 @@ function FromProfile({ navigation, route }) {
           />
         </View>
 
-        <View>
-          <Text style={styles.subTitle}>Nombre</Text>
+        <View style={formCommonStyles.formGroup}>
+          <Text style={formCommonStyles.subTitle}>Nombre</Text>
           <Controller
             name="first_name"
             control={control}
             defaultValue={first_name}
             render={({ field: { onChange, value } }) => (
               <TextInput
-                style={styles.inputStyles}
+                style={formCommonStyles.inputStyles}
                 placeholder="Nombre"
                 value={value}
                 onChangeText={(value) => onChange(value)}
@@ -99,15 +101,15 @@ function FromProfile({ navigation, route }) {
           />
         </View>
 
-        <View>
-          <Text style={styles.subTitle}>Apellidos</Text>
+        <View style={formCommonStyles.formGroup}>
+          <Text style={formCommonStyles.subTitle}>Apellidos</Text>
           <Controller
             name="last_name"
             control={control}
             defaultValue={last_name}
             render={({ field: { onChange, value } }) => (
               <TextInput
-                style={styles.inputStyles}
+                style={formCommonStyles.inputStyles}
                 placeholder="Apellidos"
                 value={value}
                 onChangeText={(value) => onChange(value)}
@@ -116,15 +118,15 @@ function FromProfile({ navigation, route }) {
           />
         </View>
 
-        <View>
-          <Text style={styles.subTitle}>Correo Electrónico</Text>
+        <View style={formCommonStyles.formGroup}>
+          <Text style={formCommonStyles.subTitle}>Correo Electrónico</Text>
           <Controller
             name="email"
             control={control}
             defaultValue={email}
             render={({ field: { onChange, value } }) => (
               <TextInput
-                style={styles.inputStyles}
+                style={formCommonStyles.inputStyles}
                 placeholder="Correo Electrónico"
                 keyboardType="email-address"
                 value={value}
@@ -133,14 +135,21 @@ function FromProfile({ navigation, route }) {
             )}
           />
         </View>
-
-        <TouchableOpacity
-          style={styles.buttonStyles}
-          onPress={handleSubmit(handleOnSubmit)}
-        >
-          <Text style={{ color: "white", fontSize: 20 }}>Actualizar</Text>
-        </TouchableOpacity>
-      </View>
+        <View style={formCommonStyles.buttonContainer}>
+          <TouchableOpacity
+            style={formCommonStyles.cancelButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Text style={formCommonStyles.buttonTextCancel}>Cancelar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={formCommonStyles.submitButton}
+            onPress={handleSubmit(handleOnSubmit)}
+          >
+            <Text style={formCommonStyles.buttonTextSubmit}>Actualizar</Text>
+          </TouchableOpacity>
+        </View>
+      </TargetCustomContainer>
     </ScrollView>
   );
 }
@@ -149,25 +158,10 @@ export default FromProfile;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 30,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
-  targetContainer: {
-    padding: 15,
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    width: "95%",
-    marginTop: 10,
-    marginBottom: 30,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5,
-    paddingHorizontal: 20,
-  },
+
   title: { fontSize: 20, fontWeight: "bold", marginBottom: 20 },
   subTitle: { marginBottom: 5 },
   inputStyles: {

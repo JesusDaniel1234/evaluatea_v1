@@ -13,33 +13,36 @@ import CircularButton from "../components/common/CircularButton";
 
 export default function Inicio() {
   const imagen = require("../../assets/autism_image.jpg");
-
+  const [offsetYState, setOffsetYState] = useState(0);
   const [showButton, setShowButton] = useState(false);
 
   const scroll = useRef();
   const handleScroll = (e) => {
     const offsetY = Math.floor(e.nativeEvent.contentOffset.y);
+    if (offsetYState === 0 && offsetY >= 100) setOffsetYState(offsetY);
     if ((offsetY >= 100 && !showButton) || (offsetY < 100 && showButton)) {
       setShowButton(!showButton);
     }
   };
 
-  const scrollTo = () =>{
+  const scrollTo = () => {
     scroll.current.scrollTo({ y: 0, animated: true });
-  }
+  };
 
   return (
     <View>
-      <CircularButton onPress={scrollTo}>
-        <Animatable.View
-          style={styles.buttonStyle}
-          animation={showButton ? "fadeIn" : "fadeOut"}
-        >
-          <Text style={styles.textoButton}>
-            <AntDesign name="up" size={30} color="white" />
-          </Text>
-        </Animatable.View>
-      </CircularButton>
+      {offsetYState != 0 && (
+        <CircularButton onPress={scrollTo}>
+          <Animatable.View
+            style={styles.buttonStyle}
+            animation={showButton ? "fadeIn" : "fadeOut"}
+          >
+            <Text style={styles.textoButton}>
+              <AntDesign name="up" size={30} color="white" />
+            </Text>
+          </Animatable.View>
+        </CircularButton>
+      )}
 
       <ScrollView
         contentContainerStyle={styles.contenedorPrincipal}
@@ -52,7 +55,7 @@ export default function Inicio() {
         <View>
           <View style={styles.imagenContenedor}>
             <Image resizeMode="cover" style={styles.imagen} source={imagen} />
-            <Text style={styles.textoURL}>https//autism_image-bla-bla-bla</Text>
+            <Text style={styles.textoURL}>Día Mundial de la Concientización sobre el Autismo: generando conciencia y comprensión. (Foto: DIFUSIÓN)</Text>
           </View>
           <Text style={styles.textoParrafo}>
             Los trastornos del espectro autista (TEA) son discapacidades del
@@ -206,8 +209,8 @@ export default function Inicio() {
 
 const styles = StyleSheet.create({
   contenedorPrincipal: {
+    paddingHorizontal: 10,
     paddingVertical: 10,
-    paddingHorizontal: 15,
   },
   textoButton: {
     textAlign: "center",

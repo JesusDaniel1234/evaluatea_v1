@@ -9,11 +9,11 @@ import {
 } from "../api/api.auth";
 export const UserContext = createContext();
 import * as SecureStore from "expo-secure-store";
-import { Alert, Text, View } from "react-native";
+import { Alert, ToastAndroid } from "react-native";
 import { jwtDecode } from "jwt-decode";
 import LoadingSpinnerComponent from "../components/LoadingSpinnerComponent";
 
-function UserProvider({ children }) {
+function UserProvider({ children, navigation }) {
   const [state, dispatch] = useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -64,17 +64,23 @@ function UserProvider({ children }) {
 
   // Función para iniciar sesión
   const funcIniciarSesion = async (usuario) => {
-    const { data } = await iniciarSesion(usuario);
-    const token = jwtDecode(data.access);
-    const response = await detallesPerfil(token.id_perfil, data.access);
+    const loginResponse = await iniciarSesion(usuario);
+    console.log("response -> ", loginResponse);
+    const token = jwtDecode(loginResponse.data.access);
+    const response = await detallesPerfil(
+      token.id_perfil,
+      loginResponse.data.access
+    );
 
-    await SecureStore.setItemAsync("token", data.access);
-    await SecureStore.setItemAsync("refresh_token", data.refresh);
-    axios.defaults.headers.common["Authorization"] = `Bearer ${data.access}`;
+    await SecureStore.setItemAsync("token", loginResponse.data.access);
+    await SecureStore.setItemAsync("refresh_token", loginResponse.data.refresh);
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${loginResponse.data.access}`;
     // Actualiza el estado para reflejar el inicio de sesión
     dispatch({
       type: "SIGN_IN",
-      token: data.access,
+      token: loginResponse.data.access,
       id: token.id_perfil,
       userData: response.data,
       userId: token.id_usuario,
@@ -137,6 +143,11 @@ function UserProvider({ children }) {
           perfilID: null,
           userID: null,
         });
+      } finally {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Inicio" }],
+        });
       }
     };
     checkAuth();
@@ -147,27 +158,49 @@ function UserProvider({ children }) {
     () => ({
       signIn: funcIniciarSesion,
       signOut: async () => {
-        try {
-          const accessToken = await SecureStore.getItemAsync("token");
-          const refreshToken = await SecureStore.getItemAsync("refresh_token");
-          // Eliminar tokens de SecureStore
-          await SecureStore.deleteItemAsync("token");
-          await SecureStore.deleteItemAsync("refresh_token");
-          // Llamar a la API para cerrar sesión (si es necesario)
-          const response = await cerrarSesion(accessToken, refreshToken);
-          // Eliminar el token de autorización de axios
-          delete axios.defaults.headers.common["Authorization"];
-          console.log("Sesión cerrada con éxito", response.status);
-          // Actualizar el estado global para reflejar el cierre de sesión
-          dispatch({ type: "SIGN_OUT" });
-        } catch (e) {
-          Alert.alert("Error al cerrar Sesión", e);
-        }
+        Alert.alert(
+          "Confirmación",
+          "¿Estás Seguro de querer cerrar la sesión?",
+          [
+            {
+              text: "Cancelar",
+              style: "cancel",
+            },
+            {
+              text: "Aceptar",
+              onPress: async () => {
+                try {
+                  const accessToken = await SecureStore.getItemAsync("token");
+                  const refreshToken = await SecureStore.getItemAsync(
+                    "refresh_token"
+                  );
+                  // Eliminar tokens de SecureStore
+                  await SecureStore.deleteItemAsync("token");
+                  await SecureStore.deleteItemAsync("refresh_token");
+                  // Llamar a la API para cerrar sesión (si es necesario)
+                  await cerrarSesion(
+                    accessToken,
+                    refreshToken
+                  );
+                  // Eliminar el token de autorización de axios
+                  delete axios.defaults.headers.common["Authorization"];
+                  // Actualizar el estado global para reflejar el cierre de sesión
+                  dispatch({ type: "SIGN_OUT" });
+                  ToastAndroid.show("Sesión Cerrada con Éxito!", ToastAndroid.SHORT);
+                } catch (e) {
+                  console.log(e)
+                  Alert.alert("Error al cerrar Sesión");
+                }
+              },
+              style: "destructive",
+            },
+          ]
+        );
       },
     }),
     []
   );
-  
+
   if (state.isLoading) {
     return <LoadingSpinnerComponent />;
   }

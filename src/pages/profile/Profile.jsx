@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { UserContext } from "../../context/UserProvider";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { formCommonStyles } from "../../constants/formCommonStyles";
+import TargetCustomContainer from "../../components/TargetCustomContainer";
 const Profile = ({ navigation }) => {
   const { userData, userToken } = useContext(UserContext);
   const { imagen_perfil, usuario } = userData;
@@ -23,7 +25,7 @@ const Profile = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.containerStyle}>
-      <View style={styles.targetStyle}>
+      <TargetCustomContainer>
         <View style={styles.imageContainer}>
           <Image source={{ uri: imagen_perfil }} style={styles.imageStyle} />
           <View style={styles.infoStyle}>
@@ -44,7 +46,7 @@ const Profile = ({ navigation }) => {
         <TouchableOpacity onPress={toFormPerfil} style={styles.touchableStyles}>
           <Text style={styles.textButton}>Actualizar</Text>
         </TouchableOpacity>
-      </View>
+      </TargetCustomContainer>
     </ScrollView>
   );
 };
@@ -53,8 +55,8 @@ export default Profile;
 
 const styles = StyleSheet.create({
   containerStyle: {
-    padding: 16,
-    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
   targetStyle: {
     padding: 15,

@@ -21,16 +21,21 @@ export default function TouchableMenuComponent({
 }) {
   const [currentRoute, setCurrentRoute] = useState("Inicio");
   const [currentParams, setCurrentParams] = useState(null);
-  const navigationState = useNavigationState((state) => state);
+  const navigationState = useNavigationState((state) => {
+    if (state && state.routes) {
+      const drawerRoute = state.routes[state.index];
+      return drawerRoute.state || drawerRoute;
+    }
+    return null; // O cualquier valor predeterminado si no está disponible
+  }); 
   const [menuIndex, setMenuIndex] = useState(-1);
   const listaPagesPrincipal = ["Inicio", "Profile"];
-
+  console.log(navigationState)
   useEffect(() => {
-    if (navigationState) {
-      const routeName = navigationState.routes[navigationState.index]?.name;
-      const currentProps =
-        navigation.getState().routes[navigationState.index]?.params;
-        console.log(currentParams)
+    if (navigationState && navigationState.routes) {
+      const currentRouteIndex = navigationState.index;
+      const routeName = navigationState.routes[currentRouteIndex]?.name;
+      const currentProps = navigationState.routes[currentRouteIndex]?.params;
       setCurrentParams(currentProps);
       setCurrentRoute(routeName);
       if (listaPagesPrincipal.find((elememt) => routeName === elememt)) {
@@ -38,19 +43,8 @@ export default function TouchableMenuComponent({
       }
     }
   }, [navigationState]);
-  console.log(currentRoute);
+  console.log(currentRoute, currentParams);
 
-  if (Platform.OS === "android") {
-    UIManager.setLayoutAnimationEnabledExperimental &&
-      UIManager.setLayoutAnimationEnabledExperimental(true);
-  }
-
-  const toggleExpand = (index) => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setMenuIndex(menuIndex === index ? -1 : index);
-  };
-
-  
   return (
     <>
       {ListLabelsMenu.map((item, index) => {
@@ -60,7 +54,7 @@ export default function TouchableMenuComponent({
             activeOpacity={0.8}
             key={index}
             style={styles.secondMenuStyles}
-            onPress={() => toggleExpand(index)}
+            onPress={() => setMenuIndex(menuIndex === index ? -1 : index)}
           >
             <View style={styles.secondMenuContainer}>
               <View style={styles.secondMenuDisposition}>
@@ -88,9 +82,14 @@ export default function TouchableMenuComponent({
                     >
                       <View style={styles.submenuContentStyle}>
                         <Text style={{ fontWeight: "500" }}>{menu.name}</Text>
-                        {(currentRoute === menu.navigation && menu.name === currentParams.test) && (
-                          <FontAwesome name="circle" size={10} color="black" />
-                        )}
+                        {currentRoute === menu.navigation &&
+                          menu.name === currentParams.test && (
+                            <FontAwesome
+                              name="circle"
+                              size={10}
+                              color="black"
+                            />
+                          )}
                       </View>
                     </TouchableNativeFeedback>
                   );

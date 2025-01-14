@@ -15,8 +15,6 @@ import { constant } from "../constants/constants";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { formCommonStyles } from "../constants/formCommonStyles";
 
-
-
 export default function FormCreatePatient({ navigation, route }) {
   const params = route.params || {};
 
@@ -29,6 +27,9 @@ export default function FormCreatePatient({ navigation, route }) {
 
   useEffect(() => {
     if (params.patient) {
+      navigation.setOptions({
+        headerTitle: "Actualizar Paciente",
+      });
       setValue("CI", params.patient.CI);
       setValue("patient", params.patient.patient);
       setValue("mentor", params.patient.mentor);
@@ -51,10 +52,6 @@ export default function FormCreatePatient({ navigation, route }) {
           data["patient"],
           data["mentor"]
         );
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "Pacientes" }],
-        });
       } else {
         await db.runAsync(
           `UPDATE patient SET CI=?, patient=?, mentor=? WHERE id=?`,
@@ -63,14 +60,14 @@ export default function FormCreatePatient({ navigation, route }) {
           data["mentor"],
           params.patient.id
         );
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "Pacientes" }],
-        });
       }
     } catch (e) {
       console.error("Ha ocurridr un error: ", e);
     }
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Pacientes" }],
+    });
   };
 
   return (
@@ -160,12 +157,7 @@ export default function FormCreatePatient({ navigation, route }) {
         <View style={formCommonStyles.buttonContainer}>
           <TouchableOpacity
             style={formCommonStyles.cancelButton}
-            onPress={() =>
-              navigation.reset({
-                index: 0,
-                routes: [{ name: "Pacientes" }],
-              })
-            }
+            onPress={() => navigation.goBack()}
           >
             <Text style={formCommonStyles.buttonTextCancel}>Cancelar</Text>
           </TouchableOpacity>
@@ -185,9 +177,7 @@ export default function FormCreatePatient({ navigation, route }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
     paddingVertical: 10,
   },
 });
-
-

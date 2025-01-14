@@ -23,6 +23,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import { useFormLogicTest } from "../hooks/FormLogicTests";
 import LoadingSpinnerComponent from "../components/LoadingSpinnerComponent";
 import { formCommonStyles } from "../constants/formCommonStyles";
+import TargetCustomContainer from "../components/TargetCustomContainer";
 
 function FromQChat({ navigation, route }) {
   const {
@@ -100,7 +101,7 @@ function FromQChat({ navigation, route }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.targetConatiner}>
+      <TargetCustomContainer>
         <View style={formCommonStyles.header}>
           <Text style={formCommonStyles.titleHeader}>Crear Pregunta</Text>
           {params.id && (
@@ -142,24 +143,22 @@ function FromQChat({ navigation, route }) {
           </View>
 
           <View style={formCommonStyles.formGroup}>
+            <Text style={formCommonStyles.subTitle}>Tipo de Riesgo</Text>
             <Controller
               control={control}
               name="tipo_riesgo"
               rules={{ required: true }}
               render={({ field: { onChange, value } }) => (
                 <Dropdown
-                  style={{
-                    padding: 10,
-                    backgroundColor: "#D3D3D3",
-                    borderRadius: 4,
-                  }}
+                  style={formCommonStyles.inputStyles}
                   placeholderStyle={{
-                    fontSize: 16,
+                    fontSize: 15,
+                    color: "gray",
                   }}
                   itemContainerStyle={{
                     borderRadius: 4,
                   }}
-                  containerStyle={{ borderRadius: 4 }}
+                  containerStyle={formCommonStyles.formGroup}
                   value={value}
                   placeholder={"Seleccione el tipo de Riesgo"}
                   data={tipoRiesgo}
@@ -198,12 +197,12 @@ function FromQChat({ navigation, route }) {
                 rules={{ required: true }}
                 render={({ field: { value, onChange } }) => (
                   <Dropdown
-                    style={{
-                      padding: 10,
-                      backgroundColor: "#D3D3D3",
-                      borderRadius: 4,
-                      flex: 0.7,
-                    }}
+                    style={[
+                      formCommonStyles.inputStyles,
+                      {
+                        flex: 0.7,
+                      },
+                    ]}
                     placeholderStyle={{
                       fontSize: 16,
                     }}
@@ -268,14 +267,14 @@ function FromQChat({ navigation, route }) {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </TargetCustomContainer>
     </ScrollView>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 16,
-    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
   targetConatiner: {
     padding: 25,
