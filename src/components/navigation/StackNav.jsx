@@ -41,7 +41,7 @@ export function StackNavigation() {
         headerStyle: { backgroundColor: "#fdce75" },
         headerTitleAlign: "center",
       }}
-      initialRouteName="PantallaCarga"
+      initialRouteName="Inicio"
     >
       {ListNavigationItems.filter((item) =>
         userToken ? item : item.needAuth !== true
