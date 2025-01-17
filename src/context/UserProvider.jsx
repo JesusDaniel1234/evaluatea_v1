@@ -65,7 +65,6 @@ function UserProvider({ children, navigation }) {
   // Función para iniciar sesión
   const funcIniciarSesion = async (usuario) => {
     const loginResponse = await iniciarSesion(usuario);
-    console.log("response -> ", loginResponse);
     const token = jwtDecode(loginResponse.data.access);
     const response = await detallesPerfil(
       token.id_perfil,
@@ -94,7 +93,6 @@ function UserProvider({ children, navigation }) {
     };
     await actualizarPerfil(state.perfilID, perfilData, state.userToken);
     const response = await detallesPerfil(state.perfilID, state.userToken);
-    console.log("Este es el perfil", response.data);
     // Después de la actualización, actualizar el contexto con los nuevos datos del usuario
     dispatch({
       type: "UPDATE_USER_DATA",

@@ -2,10 +2,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { DrawerNav } from "./src/components/DrawerNav";
 import UserProvider from "./src/context/UserProvider";
 import { SQLiteProvider } from "expo-sqlite";
+import { StatusBar } from "react-native";
+import { constant } from "./src/constants/constants";
 
 export default function App() {
   return (
     <SQLiteProvider databaseName="patient.db" onInit={migrateDbIfNeeded}>
+      <StatusBar backgroundColor={constant.primaryColor} />
       <NavigationContainer>
         <UserProvider>
           <DrawerNav />

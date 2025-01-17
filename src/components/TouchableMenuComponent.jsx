@@ -30,7 +30,6 @@ export default function TouchableMenuComponent({
   }); 
   const [menuIndex, setMenuIndex] = useState(-1);
   const listaPagesPrincipal = ["Inicio", "Profile"];
-  console.log(navigationState)
   useEffect(() => {
     if (navigationState && navigationState.routes) {
       const currentRouteIndex = navigationState.index;
@@ -43,7 +42,6 @@ export default function TouchableMenuComponent({
       }
     }
   }, [navigationState]);
-  console.log(currentRoute, currentParams);
 
   return (
     <>

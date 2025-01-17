@@ -18,6 +18,7 @@ import Entypo from "@expo/vector-icons/Entypo";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import ResultsTestsDetails from "../../pages/ResultsTestsDetails";
 import PatientDetails from "../../pages/PatientDetails";
+import SplashScreen from "../../pages/SplashScreen";
 
 export function StackNavigation() {
   const Stack = createStackNavigator();
@@ -40,7 +41,7 @@ export function StackNavigation() {
         headerStyle: { backgroundColor: "#fdce75" },
         headerTitleAlign: "center",
       }}
-      initialRouteName="Inicio"
+      initialRouteName="PantallaCarga"
     >
       {ListNavigationItems.filter((item) =>
         userToken ? item : item.needAuth !== true
@@ -160,6 +161,14 @@ export function StackNavigation() {
           title: "Detalles del Paciente",
           presentation: "modal",
           headerLeft: null,
+        }}
+      />
+      <Stack.Screen
+        name="PantallaCarga"
+        component={SplashScreen}
+        options={{
+          title: "Pantalla de Carga",
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

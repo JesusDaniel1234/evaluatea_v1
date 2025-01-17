@@ -39,12 +39,9 @@ export default function PatientDetails({ navigation, route }) {
       setLoading(true);
       try {
         const response = await detallesPacienteSimp(id);
-        console.log(response.data);
         if (response.data.paciente) setPatient(response.data.paciente);
         if (response.data.tests) setTests(response.data.tests);
-        console.log(patient);
-
-        console.log(tests);
+       
       } catch (err) {
         console.log(err);
       } finally {

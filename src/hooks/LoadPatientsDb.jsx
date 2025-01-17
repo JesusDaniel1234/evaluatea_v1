@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 export const useLoadLocalBDdata = () => {
   const db = useSQLiteContext();
   const [patients, setPatients] = useState([]);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     async function loadData() {
@@ -12,7 +13,7 @@ export const useLoadLocalBDdata = () => {
         const result = await db.getAllAsync("SELECT * FROM patient");
         setPatients(result);
       } catch (e) {
-        console.error(e);
+        setError(e);
       } finally {
         setLoading(false);
       }
@@ -20,5 +21,5 @@ export const useLoadLocalBDdata = () => {
     loadData();
   }, [db]);
 
-  return { db, patients, loading };
+  return { db, patients, loading, error };
 };

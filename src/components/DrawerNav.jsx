@@ -22,6 +22,7 @@ export function DrawerNav() {
         drawerType: "slide",
         headerShown: false,
       }}
+      initialRouteName="PantallaCarga"
     >
       <Drawer.Screen name="Home" component={StackNavigation} />
     </Drawer.Navigator>

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import { View, Text, ScrollView, StyleSheet, Button } from "react-native";
 import { RadioButton } from "react-native-paper";
 import RadioButtonComponent from "../../components/RadioButtonComponent.jsx";
 import { listaContenidosMChatR } from "../../utils/ContenidosAcordeon.js";
@@ -9,9 +9,10 @@ import Acordeon from "../../components/Acordeon.jsx";
 import QuestionIndex from "../../components/QuestionIndex.jsx";
 import { useLoadQuestionMChatR } from "../../hooks/LoadQuestionsActives.jsx";
 import LoadingSpinnerComponent from "../../components/LoadingSpinnerComponent.jsx";
+import ErrorComponent from "../../components/ErrorComponent.jsx";
 
 function MChatR({ navigation }) {
-  const { preguntas, loading } = useLoadQuestionMChatR();
+  const { preguntas, loading, error, retry } = useLoadQuestionMChatR();
   const {
     cantPreguntas,
     preguntActual,
@@ -22,7 +23,7 @@ function MChatR({ navigation }) {
     index,
     indexState,
     abrirFormulario,
-    VolverInicio
+    VolverInicio,
   } = useQuestionLogic({
     data: preguntas,
     navigation: navigation,
@@ -30,9 +31,10 @@ function MChatR({ navigation }) {
   });
 
   if (loading) return <LoadingSpinnerComponent />;
+  if (error) return <ErrorComponent retry={retry} />;
 
   return (
-    <View style={styles.contentContainer}>
+    <ScrollView contentContainerStyle={styles.contentContainer}>
       {listaContenidosMChatR.map((elemento, index) => {
         return <Acordeon key={index} elemento={elemento} />;
       })}
@@ -70,7 +72,7 @@ function MChatR({ navigation }) {
           totalQuestions={cantPreguntas}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     padding: 16,
     alignItems: "center",
-    flex: 1,
+
   },
   targetContainer: {
     padding: 25,
@@ -96,7 +98,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 5,
-
   },
   textContentQuestion: {
     fontSize: 18,

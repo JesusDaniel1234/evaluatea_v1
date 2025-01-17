@@ -5,6 +5,7 @@ import { listarPreguntasQChat10 } from "../api/axios.qchat10";
 
 export default function useLoadQuestionTests(token, test) {
   const [preguntas, setPreguntas] = useState([]);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const load = {
@@ -18,15 +19,14 @@ export default function useLoadQuestionTests(token, test) {
       setLoading(true);
       try {
         const response = await load[test](token);
-        console.log(response.status)
         setPreguntas(response.data);
       } catch (error) {
-        console.log(error);
+        setError(error);
       } finally {
         setLoading(false);
       }
     }
     loadData();
   }, [test]);
-  return { preguntas, loading };
+  return { preguntas, loading, error };
 }

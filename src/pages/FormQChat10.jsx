@@ -47,7 +47,6 @@ function FromQChat10({ navigation, route }) {
     test: params.test,
   });
 
-  console.log(params.test);
   const nuevosRangoRiesgos = rangoRiesgo.filter(
     (valor) => String(valor.tipo_riesgo.id) === String(targetValue)
   );
@@ -57,7 +56,6 @@ function FromQChat10({ navigation, route }) {
   );
 
   const onSubmit = async (data) => {
-    console.log(data);
     data["tipo_riesgo"] = targetValue;
 
     const validForm = [
@@ -72,7 +70,6 @@ function FromQChat10({ navigation, route }) {
     }
     data["creado_por"] = userData.id;
     if (params.id) {
-      console.log(data, params.id);
       await actualizarPreguntasQChat10(params.id, data, params.token);
       ToastAndroid.show("Pregunta Actualizada", ToastAndroid.SHORT);
     } else {

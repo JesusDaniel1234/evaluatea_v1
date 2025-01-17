@@ -1,5 +1,7 @@
 import { api } from "./axios.interceptor";
 
+export const serverConected = () => api.get("api_run/");
+
 export const listarRespuestasQChat10 = () =>
   api.get("listar_respuestas_qchat10/");
 

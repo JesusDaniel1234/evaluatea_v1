@@ -29,7 +29,7 @@ export const useQuestionLogic = ({ data, navigation, test }) => {
   );
 
   const SiguienteBoton = () => {
-    if (index === 0) indexState.current = 0
+    if (index === 0) indexState.current = 0;
     if (checkValue === null) {
       showToast("Seleccione una respuesta antes de continuar.");
       return;
@@ -63,11 +63,11 @@ export const useQuestionLogic = ({ data, navigation, test }) => {
   };
 
   const VolverInicio = () => {
-    setIndex(0)
-    isChecked.current = []
-    setCheckValue(null)
+    setIndex(0);
+    isChecked.current = [];
+    setCheckValue(null);
     indexState.current = 0;
-  }
+  };
 
   const handleCheckBoxChange = (value) => {
     setCheckValue(value);
@@ -75,22 +75,18 @@ export const useQuestionLogic = ({ data, navigation, test }) => {
   const showToast = (message) => ToastAndroid.show(message, ToastAndroid.SHORT);
 
   const abrirFormulario = () => {
-    console.log("Este es check value:", checkValue);
     if (checkValue === null) {
       showToast("Seleccione una respuesta antes de continuar.");
       return;
-    } 
+    }
     if (isChecked.length < pregunta.length) {
       const id = idPreguntas[index];
       const newValue = { id, value: checkValue };
       isChecked.current = [...isChecked.current, newValue];
-      console.log("este es el test", test);
     }
 
     // abrir formulario
     const points = conteoPuntos[test](pregunta, isChecked.current);
-
-    console.log("Estas son las respuestas: ", formatResponsesTests(isChecked, test));
 
     navigation.navigate("FromularioTest", {
       test: test,

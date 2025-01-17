@@ -24,7 +24,6 @@ import { Dropdown } from "react-native-element-dropdown";
 export default function ModalFormTest({ navigation, route }) {
   const { test, checkedList, points } = route.params;
   const { patients, loading } = useLoadLocalBDdata();
-  console.log("Esta es la lista de respuestas: ",checkedList)
 
   const {
     control,
@@ -37,11 +36,9 @@ export default function ModalFormTest({ navigation, route }) {
     try {
       // Crear Paciente con la data
       const apiPaciente = await crearPaciente(data);
-      console.log("Paciente-Creadas:");
       // Crear respuestas del tutot con checked list
       const apiRespuestasTutor = await crearRespuestasTutor[test](checkedList);
 
-      console.log("RepuestasTutor-Creadas:")
       // Crear lista con los id de las respuestas
       const apiRespuestasTutorId = apiRespuestasTutor.data.map(
         (respuesta) => respuesta.id
@@ -64,15 +61,11 @@ export default function ModalFormTest({ navigation, route }) {
         datos_personales: idDatosPersonales,
       };
 
-      console.log(formatoRespuetasTest)
 
       // Crear respuesta Final
       const apiRespuestasTest = await crearRespuestas[test](
         formatoRespuetasTest
       );
-      console.log("Repuestas-Creadas:");
-
-      console.log("respuesta de guardado, resultado final", apiRespuestasTest);
 
       ToastAndroid.show("Respuesta Enviada", ToastAndroid.SHORT);
 

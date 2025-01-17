@@ -6,6 +6,7 @@ import { listarRespuestasQChat10 } from "../api/axios.qchat10";
 export default function useLoadResultsTests(token, test) {
   
   const [respuestas, setPreguntas] = useState([]);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const load = {
@@ -21,12 +22,12 @@ export default function useLoadResultsTests(token, test) {
         const response = await load[test](token)
         setPreguntas(response.data);
       } catch (error) {
-        console.log(error);
+        setError(error);
       } finally {
         setLoading(false);
       }
     }
     loadData();
   }, [test]);
-  return { respuestas, loading };
+  return { respuestas, loading, error };
 }

@@ -15,6 +15,7 @@ export const useFormLogicTest = ({ setValue, id, token, test }) => {
   const [targetValue, setTargetValue] = useState(null);
   
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const loadTest = {
     QChat: detallarPreguntasQChat,
@@ -46,7 +47,7 @@ export const useFormLogicTest = ({ setValue, id, token, test }) => {
           setValue("activa", res.data.activa);
         }
       } catch (e) {
-        console.log(e);
+        setError(e);
       } finally {
         setLoading(false);
       }
@@ -55,6 +56,7 @@ export const useFormLogicTest = ({ setValue, id, token, test }) => {
   }, [id, test]);
 
   return {
+    error,
     loading,
     tipoRiesgo,
     rangoRiesgo,

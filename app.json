@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "evaluatea_v1",
+    "name": "EvalúaTEA",
     "slug": "evaluatea_v1",
     "version": "1.0.0",
     "orientation": "portrait",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -26,8 +26,13 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-secure-store"
-      
-    ]
+      "expo-secure-store",
+      "expo-sqlite"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "eebc5839-1fc5-4ec4-a0d5-02cddf058ce6"
+      }
+    }
   }
 }

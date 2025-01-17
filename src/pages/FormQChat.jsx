@@ -58,7 +58,6 @@ function FromQChat({ navigation, route }) {
     }
     data["creado_por"] = userData.id;
     if (params.id) {
-      console.log(data, params.id);
       await actualizarPreguntasQChat(params.id, data, params.token);
       ToastAndroid.show("Pregunta Actualizada", ToastAndroid.SHORT);
     } else {

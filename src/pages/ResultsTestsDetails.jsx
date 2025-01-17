@@ -40,7 +40,6 @@ export default function ResultsTestsDetails({ navigation, route }) {
       setLoading(true);
       try {
         const resp = await testDetailsResults[test](id, token);
-        console.log(resp);
         setDatosPersonales([resp.data.datos_personales]);
         setRespuestas(resp.data);
       } catch (err) {
@@ -61,7 +60,6 @@ export default function ResultsTestsDetails({ navigation, route }) {
       {
         text: "Eliminar",
         onPress: async () => {
-          console.log(test, id, token);
           await eliminarRespuestasTest[test](id, token);
 
           ToastAndroid.show("Respuesta Eliminada", ToastAndroid.SHORT);

@@ -22,7 +22,6 @@ export default function GeneralResults({navigation}) {
   const [filtredPresponses, setFiltredResponses] = useState("");
   const from = page * itemsPerPage;
   const to = Math.min((page + 1) * itemsPerPage, respuestas.length);
-  console.log(respuestas)
   const filterResponsesByName = () => {
     return respuestas.filter((element) => {
       const patientName = element.nombre_paciente;
