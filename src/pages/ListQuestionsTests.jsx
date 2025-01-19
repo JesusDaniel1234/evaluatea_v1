@@ -8,10 +8,11 @@ import TargetQuestionComponent from "../components/TargetQuestionComponent";
 import { useContext } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import CircularButton from "../components/common/CircularButton.jsx";
+import ErrorComponent from "../components/ErrorComponent.jsx";
 
 function ListQuestionsTests({ navigation, route }) {
   const { userToken } = useContext(UserContext);
-  const { preguntas, loading } = useLoadQuestionTests(
+  const { preguntas, loading, error, retry } = useLoadQuestionTests(
     userToken,
     route.params.test
   );
@@ -36,6 +37,7 @@ function ListQuestionsTests({ navigation, route }) {
     });
 
   if (loading) return <LoadingSpinnerComponent />;
+  if (error) return <ErrorComponent retry={retry} />
 
   return (
     <View style={{ flex: 1 }}>

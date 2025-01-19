@@ -12,11 +12,15 @@ import LoadingSpinnerComponent from "../components/LoadingSpinnerComponent";
 import { DataTable } from "react-native-paper";
 import { formCommonStyles } from "../constants/formCommonStyles";
 import TargetCustomContainer from "../components/TargetCustomContainer.jsx";
+import ErrorComponent from "../components/ErrorComponent.jsx";
 
 export default function ResultsTests({ navigation, route }) {
   const { userToken } = useContext(UserContext);
   const test = route.params.test;
-  const { respuestas, loading } = useLoadResultsTests(userToken, test);
+  const { respuestas, loading, error, retry } = useLoadResultsTests(
+    userToken,
+    test
+  );
   const [filtredPresponses, setFiltredResponses] = useState("");
   const [page, setPage] = useState(0);
   const [numberOfItemsPerPageList] = useState([2, 3, 4]);
@@ -42,6 +46,7 @@ export default function ResultsTests({ navigation, route }) {
   };
 
   if (loading) return <LoadingSpinnerComponent />;
+  if (error) return <ErrorComponent retry={retry} />;
 
   return (
     <ScrollView style={{ paddingHorizontal: 10, paddingVertical: 10 }}>

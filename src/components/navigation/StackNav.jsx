@@ -1,5 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { UserContext } from "../../context/UserProvider";
 import {
   ListNavigationItems,
@@ -41,7 +41,7 @@ export function StackNavigation() {
         headerStyle: { backgroundColor: "#fdce75" },
         headerTitleAlign: "center",
       }}
-      initialRouteName="Inicio"
+      initialRouteName="PantallaCarga"
     >
       {ListNavigationItems.filter((item) =>
         userToken ? item : item.needAuth !== true

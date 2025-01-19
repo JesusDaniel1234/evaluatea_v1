@@ -16,6 +16,7 @@ import { formCommonStyles } from "../constants/formCommonStyles";
 import Foundation from "@expo/vector-icons/Foundation";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { eliminarRespuestasTest } from "../utils/GestionRespuestasTest";
+import ErrorComponent from "../components/ErrorComponent";
 
 export default function ResultsTestsDetails({ navigation, route }) {
   const test = route.params.test;
@@ -24,6 +25,21 @@ export default function ResultsTestsDetails({ navigation, route }) {
   const [respuestas, setRespuestas] = useState([]);
   const [datosPersonales, setDatosPersonales] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null)
+
+  async function loadResults() {
+    setLoading(true);
+    setError(null);
+    try {
+      const resp = await testDetailsResults[test](id, token);
+      setDatosPersonales([resp.data.datos_personales]);
+      setRespuestas(resp.data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
     navigation.setOptions({
@@ -36,18 +52,7 @@ export default function ResultsTestsDetails({ navigation, route }) {
         </TouchableOpacity>
       ),
     });
-    async function loadResults() {
-      setLoading(true);
-      try {
-        const resp = await testDetailsResults[test](id, token);
-        setDatosPersonales([resp.data.datos_personales]);
-        setRespuestas(resp.data);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoading(false);
-      }
-    }
+    
     loadResults();
   }, [test, token, id]);
 
@@ -74,6 +79,7 @@ export default function ResultsTestsDetails({ navigation, route }) {
   };
 
   if (loading) return <LoadingSpinnerComponent />;
+  if (error) return <ErrorComponent retry={loadResults} />;
 
   return (
     <ScrollView style={styles.container}>

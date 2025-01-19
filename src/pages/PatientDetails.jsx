@@ -16,6 +16,7 @@ import { DataTable } from "react-native-paper";
 import { UserContext } from "../context/UserProvider.jsx";
 import { formCommonStyles } from "../constants/formCommonStyles.js";
 import { constant } from "../constants/constants.js";
+import ErrorComponent from "../components/ErrorComponent.jsx";
 
 export default function PatientDetails({ navigation, route }) {
   const { id } = route.params.patient;
@@ -23,7 +24,20 @@ export default function PatientDetails({ navigation, route }) {
   const [patient, setPatient] = useState(null);
   const [tests, setTests] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [error, setError] = useState([]);
+  async function loadData() {
+    setError(null);
+    setLoading(true);
+    try {
+      const response = await detallesPacienteSimp(id);
+      if (response.data.paciente) setPatient(response.data.paciente);
+      if (response.data.tests) setTests(response.data.tests);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  }
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -35,19 +49,7 @@ export default function PatientDetails({ navigation, route }) {
         </TouchableOpacity>
       ),
     });
-    async function loadData() {
-      setLoading(true);
-      try {
-        const response = await detallesPacienteSimp(id);
-        if (response.data.paciente) setPatient(response.data.paciente);
-        if (response.data.tests) setTests(response.data.tests);
-       
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoading(false);
-      }
-    }
+
     loadData();
   }, []);
 
@@ -78,6 +80,7 @@ export default function PatientDetails({ navigation, route }) {
   };
 
   if (loading) return <LoadingSpinnerComponent />;
+  if (error) return <ErrorComponent retry={loadData} />
 
   return (
     <ScrollView style={styles.container}>

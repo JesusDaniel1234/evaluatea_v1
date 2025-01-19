@@ -14,19 +14,27 @@ export default function useLoadQuestionTests(token, test) {
     QChat10: listarPreguntasQChat10,
   };
 
-  useEffect(() => {
-    async function loadData() {
-      setLoading(true);
-      try {
-        const response = await load[test](token);
-        setPreguntas(response.data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
+  async function loadData() {
+    setError(null);
+    setLoading(true);
+    try {
+      const response = await load[test](token);
+      setPreguntas(response.data);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
     }
+  }
+  useEffect(() => {
+    const retryWithDelay = async () => {
+      if (error) {
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        loadData();
+      }
+    };
     loadData();
+    retryWithDelay();
   }, [test]);
-  return { preguntas, loading, error };
+  return { preguntas, loading, error, retry: loadData };
 }

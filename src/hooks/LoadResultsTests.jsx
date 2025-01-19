@@ -4,7 +4,6 @@ import { listarRespuestasQChat } from "../api/axios.qchat";
 import { listarRespuestasQChat10 } from "../api/axios.qchat10";
 
 export default function useLoadResultsTests(token, test) {
-  
   const [respuestas, setPreguntas] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,19 +14,27 @@ export default function useLoadResultsTests(token, test) {
     QChat10: listarRespuestasQChat10,
   };
 
-  useEffect(() => {
-    async function loadData() {
-      setLoading(true);
-      try {
-        const response = await load[test](token)
-        setPreguntas(response.data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
+  async function loadData() {
+    setLoading(true);
+    setError(null)
+    try {
+      const response = await load[test](token);
+      setPreguntas(response.data);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
     }
+  }
+  useEffect(() => {
+    const retryWithDelay = async () => {
+      if (error) {
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        loadData();
+      }
+    };
     loadData();
+    retryWithDelay();
   }, [test]);
-  return { respuestas, loading, error };
+  return { respuestas, loading, error, retry: loadData };
 }

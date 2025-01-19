@@ -13,9 +13,10 @@ import { useState } from "react";
 import { ColorComponentRisk } from "../components/ColorComponentRisk";
 import TargetCustomContainer from "../components/TargetCustomContainer";
 import { formCommonStyles } from "../constants/formCommonStyles";
+import ErrorComponent from "../components/ErrorComponent";
 
-export default function GeneralResults({navigation}) {
-  const { loading, respuestas } = useGeneralResults();
+export default function GeneralResults({ navigation }) {
+  const { loading, respuestas, error, retry } = useGeneralResults();
   const [page, setPage] = useState(0);
   const [numberOfItemsPerPageList] = useState([2, 3, 4]);
   const [itemsPerPage] = useState(8);
@@ -32,6 +33,7 @@ export default function GeneralResults({navigation}) {
   };
 
   if (loading) return <LoadingSpinnerComponent />;
+  if (error) return <ErrorComponent retry={retry} />;
   return (
     <ScrollView style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
       <TargetCustomContainer style={{ paddingHorizontal: 10 }}>
@@ -108,7 +110,9 @@ export default function GeneralResults({navigation}) {
             .map((item, index) => (
               <TouchableOpacity
                 key={index}
-                onPress={() => navigation.navigate("DetallesPaciente", {patient: item})}
+                onPress={() =>
+                  navigation.navigate("DetallesPaciente", { patient: item })
+                }
               >
                 <DataTable.Row>
                   <DataTable.Cell style={{ flex: 2 }}>

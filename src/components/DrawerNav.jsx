@@ -12,15 +12,16 @@ export function DrawerNav() {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
         drawerStyle: style.primaryColor,
-        overlayColor: "transparent",
         drawerActiveBackgroundColor: "#e68a00",
         drawerLabelStyle: style.labelStyle,
         drawerItemStyle: {
           borderRadius: constant.borderRadius,
         },
         headerStyle: constant.primaryColor,
-        drawerType: "slide",
         headerShown: false,
+        drawerType: "slide",
+        overlayColor: "transparent",
+        sceneContainerStyle: { backgroundColor: "transparent" },
       }}
       initialRouteName="Home"
     >

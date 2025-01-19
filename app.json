@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "newArchEnabled": false,
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon-512x512.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon-512x512.png",
         "backgroundColor": "#A1D6B2"
       },
       "package": "com.jesusdaniel1234.evaluatea_v1"

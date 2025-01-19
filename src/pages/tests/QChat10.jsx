@@ -9,9 +9,10 @@ import { RadioButton } from "react-native-paper";
 import QuestionIndex from "../../components/QuestionIndex.jsx";
 import { useLoadQuestionQChat10 } from "../../hooks/LoadQuestionsActives.jsx";
 import LoadingSpinnerComponent from "../../components/LoadingSpinnerComponent.jsx";
+import ErrorComponent from "../../components/ErrorComponent.jsx";
 
 function QChat10({ navigation }) {
-  const { preguntas, loading } = useLoadQuestionQChat10();
+  const { preguntas, loading, error, retry } = useLoadQuestionQChat10();
   const {
     cantPreguntas,
     preguntActual,
@@ -30,6 +31,7 @@ function QChat10({ navigation }) {
   });
 
   if (loading) return <LoadingSpinnerComponent />;
+  if (error) return <ErrorComponent retry={retry} />;
 
   return (
     <ScrollView

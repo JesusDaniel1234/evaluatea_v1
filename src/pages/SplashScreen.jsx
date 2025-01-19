@@ -5,9 +5,12 @@ import {
   Button,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { constant } from "../constants/constants";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+
 export default function SplashScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -24,7 +27,6 @@ export default function SplashScreen({ navigation }) {
       }
     } catch (error) {
       setError(error);
-      console.error("Error al conectar con la API:", error);
     } finally {
       setLoading(false);
     }
@@ -36,17 +38,44 @@ export default function SplashScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <View>
+        <Text style={styles.presenntationTitle}>
+          Bienvenido a EvalúaTEA
+          <MaterialCommunityIcons
+            name="face-man-profile"
+            size={50}
+            color="#e68a00"
+          />
+        </Text>
+      </View>
       {loading && error === null && (
         <View>
-          <ActivityIndicator size="large" color="#0000ff" />
+          <ActivityIndicator size="large" color="white" />
           <Text style={styles.text}>Conectando con el Servidor</Text>
         </View>
       )}
 
       {error != null && (
         <View>
-          <Text>Ha ocurrido un Error</Text>
-          <Button title="Reintentar" onPress={checkApiConnection} />
+          <Text style={{ color: "white", fontSize: 20, textAlign: "center" }}>
+            Ha ocurrido un error de conexión.
+          </Text>
+          <Text
+            style={{
+              color: "white",
+              fontSize: 20,
+              marginBottom: 20,
+              textAlign: "center",
+            }}
+          >
+            Vuelva a Intentarlo.
+          </Text>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={checkApiConnection}
+          >
+            <Text style={styles.bottonText}>Reintentar</Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>
@@ -54,19 +83,34 @@ export default function SplashScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: constant.primaryColor
-  },
   container: {
+    backgroundColor: constant.primaryColor,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
   text: {
     marginTop: 10,
-    fontSize: 16,
+    fontSize: 20,
+    color: "white",
+  },
+  bottonText: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  buttonContainer: {
+    borderColor: "white",
+    padding: 12,
+    borderWidth: 1,
+    borderRadius: 4,
+  },
+  presenntationTitle: {
+    fontSize: 50,
+    fontWeight: "500",
+    textAlign: "center",
+    color: "#e68a00",
+    marginVertical: 40,
   },
 });

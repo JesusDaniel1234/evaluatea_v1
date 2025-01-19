@@ -1,5 +1,5 @@
-import { useSQLiteContext } from "expo-sqlite";
-import React, { useEffect, useState } from "react";
+
+import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import CircularButton from "../components/common/CircularButton";
 import AntDesign from "@expo/vector-icons/AntDesign";

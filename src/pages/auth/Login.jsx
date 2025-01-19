@@ -77,16 +77,19 @@ const Login = ({ navigation }) => {
             <Text style={formCommonStyles.subTitle}>Contraseña</Text>
             <View
               style={[
-                formCommonStyles.inputStyles,
                 {
                   flexDirection: "row",
                   alignItems: "center",
-                  paddingVertical: 1.5,
+                  borderColor: "#ccc",
+                  borderWidth: 1,
+                  borderRadius: 8,
+                
+                  marginBottom: 4,
                 },
               ]}
             >
               <TextInput
-                style={{ flex: 1 }}
+                style={{ flex: 1, paddingLeft: 10 }}
                 placeholder="Password"
                 value={password}
                 onChangeText={setPassword}
