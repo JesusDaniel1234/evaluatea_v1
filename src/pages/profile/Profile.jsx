@@ -22,12 +22,13 @@ const Profile = ({ navigation }) => {
       userData: userData,
       token: userToken,
     });
-
   return (
     <ScrollView contentContainerStyle={styles.containerStyle}>
       <TargetCustomContainer>
         <View style={styles.imageContainer}>
-          <Image source={{ uri: imagen_perfil }} style={styles.imageStyle} />
+          {imagen_perfil && (
+            <Image source={{ uri: imagen_perfil }} style={styles.imageStyle} />
+          )}
           <View style={styles.infoStyle}>
             <Text style={styles.titleStyle}>Perfil de Usuario</Text>
             <Text style={styles.usernameStyle}>Username: {username}</Text>
@@ -36,11 +37,19 @@ const Profile = ({ navigation }) => {
         <View style={styles.lineaSpacing} />
         <View style={styles.labelContainer}>
           <AntDesign name="user" size={24} color="black" />
-          <Text style={styles.textStyles}>{name}</Text>
+          {name ? (
+            <Text style={styles.textStyles}>{name}</Text>
+          ) : (
+            <Text style={styles.textStyles}>**************</Text>
+          )}
         </View>
         <View style={styles.labelContainer}>
           <AntDesign name="mail" size={24} color="black" />
-          <Text style={styles.textStyles}>{email}</Text>
+          {email ? (
+            <Text style={styles.textStyles}>{email}</Text>
+          ) : (
+            <Text style={styles.textStyles}>**************</Text>
+          )}
         </View>
 
         <TouchableOpacity onPress={toFormPerfil} style={styles.touchableStyles}>
@@ -99,7 +108,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 10,
   },
-  textStyles: { fontSize: 18, fontWeight: "500" },
+  textStyles: { fontSize: 15, fontWeight: "500" },
   touchableStyles: {
     alignItems: "center",
     backgroundColor: "#007BFF",
