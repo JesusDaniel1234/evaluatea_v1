@@ -1,5 +1,5 @@
 import { useSQLiteContext } from "expo-sqlite";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import {
   View,
@@ -9,14 +9,20 @@ import {
   Alert,
   ScrollView,
   TouchableOpacity,
+  Modal,
+  ActivityIndicator,
 } from "react-native";
 import TargetCustomContainer from "../components/TargetCustomContainer";
 import { constant } from "../constants/constants";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { formCommonStyles } from "../constants/formCommonStyles";
+import LoadingSpinnerComponent from "../components/LoadingSpinnerComponent";
+import ModalComponent from "../components/ModalComponent";
 
 export default function FormCreatePatient({ navigation, route }) {
   const params = route.params || {};
+
+  const [loading, setLoading] = useState(false);
 
   const {
     control,
@@ -43,7 +49,7 @@ export default function FormCreatePatient({ navigation, route }) {
       Alert.alert("El CI debe ser de 11 caracteres");
       return;
     }
-
+    setLoading(true);
     try {
       if (!params.patient) {
         await db.runAsync(
@@ -63,6 +69,8 @@ export default function FormCreatePatient({ navigation, route }) {
       }
     } catch (e) {
       console.error("Ha ocurridr un error: ", e);
+    } finally {
+      setLoading(false);
     }
     navigation.reset({
       index: 0,
@@ -72,6 +80,7 @@ export default function FormCreatePatient({ navigation, route }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <ModalComponent loading={loading} />
       <TargetCustomContainer>
         <View style={formCommonStyles.header}>
           <Text style={formCommonStyles.titleHeader}>
@@ -180,4 +189,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
   },
+  
 });

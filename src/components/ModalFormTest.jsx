@@ -20,10 +20,13 @@ import { formCommonStyles } from "../constants/formCommonStyles";
 import TargetCustomContainer from "./TargetCustomContainer.jsx";
 import { useLoadLocalBDdata } from "../hooks/LoadPatientsDb.jsx";
 import { Dropdown } from "react-native-element-dropdown";
+import ModalComponent from "./ModalComponent.jsx";
 
 export default function ModalFormTest({ navigation, route }) {
   const { test, checkedList, points } = route.params;
   const { patients, loading } = useLoadLocalBDdata();
+
+  const [modalLoading, setModalLoading] = useState(false);
 
   const {
     control,
@@ -33,6 +36,7 @@ export default function ModalFormTest({ navigation, route }) {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setModalLoading(true);
     try {
       // Crear Paciente con la data
       const apiPaciente = await crearPaciente(data);
@@ -43,7 +47,7 @@ export default function ModalFormTest({ navigation, route }) {
       const apiRespuestasTutorId = apiRespuestasTutor.data.map(
         (respuesta) => respuesta.id
       );
-      
+
       // get id DatosPersonales
       const idDatosPersonales =
         apiPaciente.status === 200
@@ -61,7 +65,6 @@ export default function ModalFormTest({ navigation, route }) {
         datos_personales: idDatosPersonales,
       };
 
-
       // Crear respuesta Final
       const apiRespuestasTest = await crearRespuestas[test](
         formatoRespuetasTest
@@ -73,6 +76,8 @@ export default function ModalFormTest({ navigation, route }) {
     } catch (e) {
       console.log(e);
       ToastAndroid.show("Error al enviar la respuesta", ToastAndroid.SHORT);
+    } finally {
+      setModalLoading(true);
     }
   };
 
@@ -84,6 +89,7 @@ export default function ModalFormTest({ navigation, route }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <ModalComponent loading={modalLoading} />
       <TargetCustomContainer>
         <View style={formCommonStyles.header}>
           <Text style={formCommonStyles.titleHeader}>Envío de Resultados</Text>
@@ -248,7 +254,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 16,
   },
-  
+
   subTitle: { fontSize: 15, marginLeft: 5 },
   headerText: {
     fontSize: 24,

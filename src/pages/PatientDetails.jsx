@@ -17,6 +17,7 @@ import { UserContext } from "../context/UserProvider.jsx";
 import { formCommonStyles } from "../constants/formCommonStyles.js";
 import { constant } from "../constants/constants.js";
 import ErrorComponent from "../components/ErrorComponent.jsx";
+import ModalComponent from "../components/ModalComponent.jsx";
 
 export default function PatientDetails({ navigation, route }) {
   const { id } = route.params.patient;
@@ -25,6 +26,8 @@ export default function PatientDetails({ navigation, route }) {
   const [tests, setTests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState([]);
+  const [modalLoading, setModalLoading] = useState(false);
+
   async function loadData() {
     setError(null);
     setLoading(true);
@@ -65,13 +68,20 @@ export default function PatientDetails({ navigation, route }) {
         {
           text: "Eliminar",
           onPress: async () => {
-            await eliminarPaciente(id);
+            setModalLoading(true);
+            try {
+              await eliminarPaciente(id);
 
-            ToastAndroid.show("Paciente Eliminado", ToastAndroid.SHORT);
-            navigation.reset({
-              index: 0,
-              routes: [{ name: "Informe General" }],
-            });
+              ToastAndroid.show("Paciente Eliminado", ToastAndroid.SHORT);
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "Informe General" }],
+              });
+            } catch (e) {
+              ToastAndroid.show("Ha ocurrido un error.", ToastAndroid.SHORT);
+            } finally {
+              setModalLoading(false);
+            }
           },
           style: "destructive",
         },
@@ -80,10 +90,11 @@ export default function PatientDetails({ navigation, route }) {
   };
 
   if (loading) return <LoadingSpinnerComponent />;
-  if (error) return <ErrorComponent retry={loadData} />
+  if (error) return <ErrorComponent retry={loadData} />;
 
   return (
     <ScrollView style={styles.container}>
+      <ModalComponent loading={modalLoading} />
       <TargetCustomContainer>
         <View style={formCommonStyles.header}>
           <Text style={formCommonStyles.titleHeader}>Datos del Paciente</Text>

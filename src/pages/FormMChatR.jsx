@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { ToastAndroid, Alert } from "react-native";
 import {
@@ -23,6 +23,7 @@ import LoadingSpinnerComponent from "../components/LoadingSpinnerComponent";
 import { useFormLogicTestMChatR } from "../hooks/FromLogicTestMChatR";
 import { formCommonStyles } from "../constants/formCommonStyles";
 import TargetCustomContainer from "../components/TargetCustomContainer";
+import ModalComponent from "../components/ModalComponent";
 
 function FormMChatR({ navigation, route }) {
   const {
@@ -35,6 +36,8 @@ function FormMChatR({ navigation, route }) {
 
   const { userData } = useContext(UserContext);
 
+  const [modalLoading, setModalLoading] = useState(false)
+
   const { loading } = useFormLogicTestMChatR({
     id: params.id,
     token: params.token,
@@ -42,19 +45,26 @@ function FormMChatR({ navigation, route }) {
   });
 
   const onSubmit = async (data) => {
+    setModalLoading(true)
     data["creado_por"] = userData.id;
-    if (params.id) {
-      await actualizarPreguntasMChatR(params.id, data, params.token);
-      ToastAndroid.show("Pregunta Actualizada", ToastAndroid.SHORT);
-    } else {
-      data["activa"] = data["activa"] === "checked" ? true : false;
-      await crearPreguntasMChatR(data, params.token);
-      ToastAndroid.show("Pregunta Creada", ToastAndroid.SHORT);
+    try {
+      if (params.id) {
+        await actualizarPreguntasMChatR(params.id, data, params.token);
+        ToastAndroid.show("Pregunta Actualizada", ToastAndroid.SHORT);
+      } else {
+        data["activa"] = data["activa"] === "checked" ? true : false;
+        await crearPreguntasMChatR(data, params.token);
+        ToastAndroid.show("Pregunta Creada", ToastAndroid.SHORT);
+      }
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "ListarPreguntas", params: { test: "MChatR" } }],
+      });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setModalLoading(false)
     }
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "ListarPreguntas", params: { test: "MChatR" } }],
-    });
   };
 
   const pickers = [
@@ -88,6 +98,7 @@ function FormMChatR({ navigation, route }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+    <ModalComponent loading={modalLoading} />
       <TargetCustomContainer>
         <View style={formCommonStyles.header}>
           <Text style={formCommonStyles.titleHeader}>Crear Pregunta</Text>

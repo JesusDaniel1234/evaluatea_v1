@@ -2,18 +2,16 @@ import { useContext } from "react";
 import {
   View,
   Text,
-  Image,
   ScrollView,
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
 import { UserContext } from "../../context/UserProvider";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { formCommonStyles } from "../../constants/formCommonStyles";
 import TargetCustomContainer from "../../components/TargetCustomContainer";
 const Profile = ({ navigation }) => {
   const { userData, userToken } = useContext(UserContext);
-  const { imagen_perfil, usuario } = userData;
+  const { usuario } = userData;
   const { email, first_name, last_name, username } = usuario;
   const name = first_name + " " + last_name;
 
@@ -26,9 +24,9 @@ const Profile = ({ navigation }) => {
     <ScrollView contentContainerStyle={styles.containerStyle}>
       <TargetCustomContainer>
         <View style={styles.imageContainer}>
-          {imagen_perfil && (
+          {/* {imagen_perfil && (
             <Image source={{ uri: imagen_perfil }} style={styles.imageStyle} />
-          )}
+          )} */}
           <View style={styles.infoStyle}>
             <Text style={styles.titleStyle}>Perfil de Usuario</Text>
             <Text style={styles.usernameStyle}>Username: {username}</Text>

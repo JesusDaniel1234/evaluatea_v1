@@ -6,20 +6,22 @@ import {
   ScrollView,
   Alert,
   StyleSheet,
-  Image,
 } from "react-native";
 import { useForm, Controller } from "react-hook-form";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/UserProvider";
 import TargetCustomContainer from "../../components/TargetCustomContainer";
 import { formCommonStyles } from "../../constants/formCommonStyles";
+import ModalComponent from "../../components/ModalComponent";
 
 function FromProfile({ navigation, route }) {
   const { onSubmit } = useContext(UserContext);
 
-  const { imagen_perfil, usuario } = route.params.userData;
+  const { usuario } = route.params.userData;
   const { email, first_name, last_name, username } = usuario;
   const { setValue, handleSubmit, control } = useForm();
+  console.log(usuario)
+  const [modalLoading, setModalLoading] = useState(false);
 
   useEffect(() => {
     setValue("username", username);
@@ -29,17 +31,21 @@ function FromProfile({ navigation, route }) {
   });
 
   const handleOnSubmit = async (data) => {
+    setModalLoading(true);
     try {
       await onSubmit(data);
       Alert.alert("Success", "Profile updated successfully");
       navigation.goBack(); // Navigate back after success
     } catch (error) {
       Alert.alert("Error", "Failed to update profile");
+    } finally {
+      setModalLoading(false);
     }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <ModalComponent loading={modalLoading} />
       <TargetCustomContainer>
         <View
           style={{
@@ -48,7 +54,7 @@ function FromProfile({ navigation, route }) {
             marginVertical: 20,
           }}
         >
-          <Image
+          {/* <Image
             source={{ uri: imagen_perfil }}
             style={{
               width: 100,
@@ -56,7 +62,7 @@ function FromProfile({ navigation, route }) {
               borderRadius: 50,
               backgroundColor: "transparent",
             }}
-          />
+          /> */}
           <View style={{ marginLeft: 10 }}>
             <Text style={{ fontSize: 24, fontWeight: "bold" }}>
               Actualizar Perfil

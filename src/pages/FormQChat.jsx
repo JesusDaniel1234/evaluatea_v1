@@ -24,6 +24,7 @@ import { useFormLogicTest } from "../hooks/FormLogicTests";
 import LoadingSpinnerComponent from "../components/LoadingSpinnerComponent";
 import { formCommonStyles } from "../constants/formCommonStyles";
 import TargetCustomContainer from "../components/TargetCustomContainer";
+import ModalComponent from "../components/ModalComponent";
 
 function FromQChat({ navigation, route }) {
   const {
@@ -34,6 +35,8 @@ function FromQChat({ navigation, route }) {
   } = useForm();
   const params = route.params || {};
   const { userData } = useContext(UserContext);
+
+  const [modalLoading, setModalLoading] = useState(false);
 
   const { loading, targetValue, tipoRiesgo, rangoRiesgo, setTargetValue } =
     useFormLogicTest({
@@ -56,19 +59,26 @@ function FromQChat({ navigation, route }) {
       Alert.alert("Corregir Opciones de Selección");
       return;
     }
-    data["creado_por"] = userData.id;
-    if (params.id) {
-      await actualizarPreguntasQChat(params.id, data, params.token);
-      ToastAndroid.show("Pregunta Actualizada", ToastAndroid.SHORT);
-    } else {
-      data["activa"] = data["activa"] === "checked" ? true : false;
-      await crearPreguntasQChat(data, params.token);
-      ToastAndroid.show("Pregunta Creada", ToastAndroid.SHORT);
+    setModalLoading(true);
+    try {
+      data["creado_por"] = userData.id;
+      if (params.id) {
+        await actualizarPreguntasQChat(params.id, data, params.token);
+        ToastAndroid.show("Pregunta Actualizada", ToastAndroid.SHORT);
+      } else {
+        data["activa"] = data["activa"] === "checked" ? true : false;
+        await crearPreguntasQChat(data, params.token);
+        ToastAndroid.show("Pregunta Creada", ToastAndroid.SHORT);
+      }
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "ListarPreguntas", params: { test: "QChat" } }],
+      });
+    } catch (e) {
+      ToastAndroid.show("Ha ocurrido un error.", ToastAndroid.SHORT);
+    } finally {
+      setModalLoading(false);
     }
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "ListarPreguntas", params: { test: "QChat" } }],
-    });
   };
 
   const handleDelete = async () => {
@@ -80,16 +90,20 @@ function FromQChat({ navigation, route }) {
       {
         text: "Eliminar",
         onPress: async () => {
-          const response = await eliminarPreguntasQChat(
-            params.id,
-            params.token
-          );
+          setModalLoading(true);
+          try {
+            await eliminarPreguntasQChat(params.id, params.token);
 
-          ToastAndroid.show("Pregunta Eliminada", ToastAndroid.SHORT);
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "ListarPreguntas", params: { test: "QChat" } }],
-          });
+            ToastAndroid.show("Pregunta Eliminada", ToastAndroid.SHORT);
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "ListarPreguntas", params: { test: "QChat" } }],
+            });
+          } catch (e) {
+            ToastAndroid.show("Ha ocurrido un error.", ToastAndroid.SHORT);
+          } finally {
+            setModalLoading(false);
+          }
         },
         style: "destructive",
       },
@@ -100,6 +114,7 @@ function FromQChat({ navigation, route }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <ModalComponent loading={modalLoading} />
       <TargetCustomContainer>
         <View style={formCommonStyles.header}>
           <Text style={formCommonStyles.titleHeader}>Crear Pregunta</Text>

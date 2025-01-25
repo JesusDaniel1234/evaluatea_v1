@@ -15,6 +15,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Entypo from "@expo/vector-icons/Entypo";
 import { formCommonStyles } from "../../constants/formCommonStyles";
 import TargetCustomContainer from "../../components/TargetCustomContainer";
+import ModalComponent from "../../components/ModalComponent";
 
 const Login = ({ navigation }) => {
   const { signIn } = useContext(UserContext);
@@ -29,11 +30,14 @@ const Login = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const [modalLoading, setModalLoading] = useState(false);
+
   const [loading, handleLogin] = useLoading(async () => {
     const usuario = {
       username,
       password,
     };
+    setModalLoading(true);
     try {
       await signIn(usuario);
       navigation.navigate("Inicio");
@@ -44,6 +48,8 @@ const Login = ({ navigation }) => {
         "Error",
         "Ha ocurrido un error al iniciar sesión. Por favor revise sus credenciales."
       );
+    } finally {
+      setModalLoading(false);
     }
   });
 
@@ -51,6 +57,7 @@ const Login = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.conatinerStyle}>
+      <ModalComponent loading={modalLoading} />
       <TargetCustomContainer>
         <Text style={styles.presenntationTitle}>
           Bienvenido a EvalúaTEA
@@ -83,7 +90,7 @@ const Login = ({ navigation }) => {
                   borderColor: "#ccc",
                   borderWidth: 1,
                   borderRadius: 8,
-                
+
                   marginBottom: 4,
                 },
               ]}

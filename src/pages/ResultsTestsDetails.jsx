@@ -17,6 +17,7 @@ import Foundation from "@expo/vector-icons/Foundation";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { eliminarRespuestasTest } from "../utils/GestionRespuestasTest";
 import ErrorComponent from "../components/ErrorComponent";
+import ModalComponent from "../components/ModalComponent";
 
 export default function ResultsTestsDetails({ navigation, route }) {
   const test = route.params.test;
@@ -25,7 +26,9 @@ export default function ResultsTestsDetails({ navigation, route }) {
   const [respuestas, setRespuestas] = useState([]);
   const [datosPersonales, setDatosPersonales] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
+
+  const [modalLoading, setModalLoading] = useState(false);
 
   async function loadResults() {
     setLoading(true);
@@ -52,7 +55,7 @@ export default function ResultsTestsDetails({ navigation, route }) {
         </TouchableOpacity>
       ),
     });
-    
+
     loadResults();
   }, [test, token, id]);
 
@@ -65,13 +68,18 @@ export default function ResultsTestsDetails({ navigation, route }) {
       {
         text: "Eliminar",
         onPress: async () => {
-          await eliminarRespuestasTest[test](id, token);
-
-          ToastAndroid.show("Respuesta Eliminada", ToastAndroid.SHORT);
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "ListarResultados", params: { test: test } }],
-          });
+          setModalLoading(true);
+          try {
+            await eliminarRespuestasTest[test](id, token);
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "ListarResultados", params: { test: test } }],
+            });
+          } catch (e) {
+            ToastAndroid.show("Ha ocurrido un error.", ToastAndroid.SHORT);
+          } finally {
+            setModalLoading(false);
+          }
         },
         style: "destructive",
       },
@@ -83,6 +91,7 @@ export default function ResultsTestsDetails({ navigation, route }) {
 
   return (
     <ScrollView style={styles.container}>
+      <ModalComponent loading={modalLoading} />
       <TargetCustomContainer>
         <View style={[formCommonStyles.header, { marginBottom: 15 }]}>
           <Text style={styles.title}>Resultados-Tests {test}</Text>
@@ -94,7 +103,6 @@ export default function ResultsTestsDetails({ navigation, route }) {
         </View>
 
         <View style={styles.responsesContent}>
-          
           {datosPersonales &&
             datosPersonales.map((datos) => (
               <View key={datos.id} style={{ width: "85%" }}>

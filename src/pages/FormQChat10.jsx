@@ -23,6 +23,7 @@ import { useFormLogicTest } from "../hooks/FormLogicTests";
 import LoadingSpinnerComponent from "../components/LoadingSpinnerComponent";
 import { formCommonStyles } from "../constants/formCommonStyles";
 import TargetCustomContainer from "../components/TargetCustomContainer";
+import ModalComponent from "../components/ModalComponent";
 
 function FromQChat10({ navigation, route }) {
   const {
@@ -47,6 +48,8 @@ function FromQChat10({ navigation, route }) {
     test: params.test,
   });
 
+  const [modalLoading, setModalLoading] = useState(false);
+
   const nuevosRangoRiesgos = rangoRiesgo.filter(
     (valor) => String(valor.tipo_riesgo.id) === String(targetValue)
   );
@@ -69,18 +72,25 @@ function FromQChat10({ navigation, route }) {
       return;
     }
     data["creado_por"] = userData.id;
-    if (params.id) {
-      await actualizarPreguntasQChat10(params.id, data, params.token);
-      ToastAndroid.show("Pregunta Actualizada", ToastAndroid.SHORT);
-    } else {
-      data["activa"] = data["activa"] === "checked" ? true : false;
-      await crearPreguntasQChat10(data, params.token);
-      ToastAndroid.show("Pregunta Creada", ToastAndroid.SHORT);
+    setModalLoading(true);
+    try {
+      if (params.id) {
+        await actualizarPreguntasQChat10(params.id, data, params.token);
+        ToastAndroid.show("Pregunta Actualizada", ToastAndroid.SHORT);
+      } else {
+        data["activa"] = data["activa"] === "checked" ? true : false;
+        await crearPreguntasQChat10(data, params.token);
+        ToastAndroid.show("Pregunta Creada", ToastAndroid.SHORT);
+      }
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "ListarPreguntas", params: { test: "QChat10" } }],
+      });
+    } catch (e) {
+      ToastAndroid.show("Ha ocurrido un error.", ToastAndroid.SHORT);
+    } finally {
+      setModalLoading(false);
     }
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "ListarPreguntas", params: { test: "QChat10" } }],
-    });
   };
 
   const handleDelete = async () => {
@@ -92,12 +102,9 @@ function FromQChat10({ navigation, route }) {
       {
         text: "Eliminar",
         onPress: async () => {
+          setModalLoading(true);
           try {
-            const response = await eliminarPreguntasQChat10(
-              params.id,
-              params.token
-            );
-
+            await eliminarPreguntasQChat10(params.id, params.token);
             ToastAndroid.show("Pregunta Eliminada", ToastAndroid.SHORT);
             navigation.reset({
               index: 0,
@@ -106,12 +113,9 @@ function FromQChat10({ navigation, route }) {
               ],
             });
           } catch (e) {
-            console.log(e);
-
-            ToastAndroid.show(
-              "Hubo un error al eliminar la pregunta.",
-              ToastAndroid.SHORT
-            );
+            ToastAndroid.show("Ha orurrido un error.", ToastAndroid.SHORT);
+          } finally {
+            setModalLoading(false);
           }
         },
         style: "destructive",
@@ -123,6 +127,7 @@ function FromQChat10({ navigation, route }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <ModalComponent loading={modalLoading} />
       <TargetCustomContainer>
         <View style={formCommonStyles.header}>
           <Text style={formCommonStyles.titleHeader}>Crear Pregunta</Text>

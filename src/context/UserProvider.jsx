@@ -23,7 +23,7 @@ function UserProvider({ children, navigation }) {
             perfilID: action.id,
             userToken: action.token,
             userData: action.userData,
-            userID: action.userId,
+            userID: action.userID,
             isLoading: false,
           };
         case "SIGN_IN":
@@ -33,7 +33,7 @@ function UserProvider({ children, navigation }) {
             perfilID: action.id,
             userToken: action.token,
             userData: action.userData,
-            userID: action.userId,
+            userID: action.userID,
           };
         case "SIGN_OUT":
           return {
@@ -70,9 +70,10 @@ function UserProvider({ children, navigation }) {
       token.id_perfil,
       loginResponse.data.access
     );
-
+    console.log("data",response.data)
     await SecureStore.setItemAsync("token", loginResponse.data.access);
     await SecureStore.setItemAsync("refresh_token", loginResponse.data.refresh);
+    console.log("Iniciar Sesión idUsuario:",typeof token.id_usuario)
     axios.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${loginResponse.data.access}`;
@@ -82,12 +83,13 @@ function UserProvider({ children, navigation }) {
       token: loginResponse.data.access,
       id: token.id_perfil,
       userData: response.data,
-      userId: token.id_usuario,
+      userID: token.id_usuario,
     });
   };
 
   const funcActualizarPefil = async (data) => {
     const usuarioActualizado = await actualizarUsuario(state.userID, data);
+    console.log(state.userID);
     const perfilData = {
       usuario: usuarioActualizado.data.id,
     };

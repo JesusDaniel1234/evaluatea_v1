@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { UserContext } from "../context/UserProvider";
 
 export default function UserInfoDrawerComponent({ navigation }) {
-  const { userData } = useContext(UserContext);
-
+  const { userData, userID, id } = useContext(UserContext);
+  console.log("Este es el userID", userID, id)
   if (userData) {
-    const { imagen_perfil, usuario } = userData;
+    const { usuario } = userData;
     const { email, first_name, last_name } = usuario;
     const name = first_name + " " + last_name;
     return (
@@ -14,7 +14,7 @@ export default function UserInfoDrawerComponent({ navigation }) {
         style={styles.userAreaContentAuth}
         onPress={() => navigation.navigate("Perfil")}
       >
-        <Image source={{ uri: imagen_perfil }} style={styles.userImageStyle} />
+        {/* <Image source={{ uri: imagen_perfil }} style={styles.userImageStyle} />  */}
         <View style={styles.userContentInfo}>
           <Text style={styles.userNameContentAuth}>{name}</Text>
           <Text>{email}</Text>
