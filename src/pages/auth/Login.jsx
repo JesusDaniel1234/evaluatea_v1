@@ -79,35 +79,38 @@ const Login = ({ navigation }) => {
               autoCapitalize="none"
             />
           </View>
-
-          <View style={formCommonStyles.formGroup}>
-            <Text style={formCommonStyles.subTitle}>Contraseña</Text>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                borderColor: "#ccc",
-                borderWidth: 1,
-                borderRadius: 8,
-                marginBottom: 4,
-              }}
-            >
+          <View
+            style={{
+              marginBottom: 15,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <View style={{ flex: 1 }}>
+              <Text style={formCommonStyles.subTitle}>Contraseña</Text>
               <TextInput
-                style={{ flex: 1, paddingLeft: 10 }}
+                style={formCommonStyles.inputStyles}
                 placeholder="Password"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry={!showPassword}
               />
-
-              <Entypo
-                name={showPassword ? "eye-with-line" : "eye"}
-                size={24}
-                style={{ marginRight: 10 }}
-                color="black"
-                onPress={toggleShowPassword}
-              />
             </View>
+            <Entypo
+              name={showPassword ? "eye-with-line" : "eye"}
+              size={24}
+              style={{
+                padding: 9,
+                top: 5,
+                borderColor: "black",
+                borderColor: "#ccc",
+                borderWidth: 1,
+                borderRadius: 8,
+                marginLeft:3
+              }}
+              color="black"
+              onPress={toggleShowPassword}
+            />
           </View>
 
           <TouchableOpacity
