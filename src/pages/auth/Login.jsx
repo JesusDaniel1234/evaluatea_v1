@@ -83,17 +83,14 @@ const Login = ({ navigation }) => {
           <View style={formCommonStyles.formGroup}>
             <Text style={formCommonStyles.subTitle}>Contraseña</Text>
             <View
-              style={[
-                {
-                  flexDirection: "row",
-                  alignItems: "center",
-                  borderColor: "#ccc",
-                  borderWidth: 1,
-                  borderRadius: 8,
-
-                  marginBottom: 4,
-                },
-              ]}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                borderColor: "#ccc",
+                borderWidth: 1,
+                borderRadius: 8,
+                marginBottom: 4,
+              }}
             >
               <TextInput
                 style={{ flex: 1, paddingLeft: 10 }}
